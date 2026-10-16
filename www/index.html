@@ -47,6 +47,32 @@ nav button.on{background:var(--g);color:#fff;font-weight:800}
 .xp{position:fixed;left:50%;top:38%;margin-left:-40px;font-size:24px;font-weight:900;color:var(--ok);pointer-events:none;z-index:99;animation:rise .9s forwards}
 .hero{display:flex;justify-content:center}.hero svg{width:110px;height:110px;animation:none}.hero.cel svg{animation:jump .9s 2}.hero.sad svg{animation:tilt 1.6s infinite}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.mw{width:130px;perspective:500px}.hero2{display:flex;justify-content:center}
+.mq{float:right;width:62px;margin:-4px 0 4px 8px}.mq .mw{width:62px}
+.mas{display:block;width:100%;height:auto;overflow:visible;filter:drop-shadow(0 6px 5px rgba(0,0,0,.25));animation:sway 4s ease-in-out infinite}
+.mas .eyes{transform-box:fill-box;transform-origin:center;animation:blink 4s infinite}
+.mas .tail{animation:wag 2s ease-in-out infinite}
+.mas .body{animation:breath 3s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotateY(-10deg)}50%{transform:rotateY(10deg)}}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+@keyframes wag{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(14deg)}}
+@keyframes breath{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.025)}}
+@keyframes armR{from{transform:rotate(-125deg)}to{transform:rotate(-160deg)}}
+@keyframes armL{from{transform:rotate(25deg)}to{transform:rotate(150deg)}}
+@keyframes armR2{from{transform:rotate(-25deg)}to{transform:rotate(-150deg)}}
+@keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-22px)}}
+@keyframes boogie{0%{transform:translate(-7px,0) rotate(-6deg)}50%{transform:translate(0,-12px) rotate(0)}100%{transform:translate(7px,0) rotate(6deg)}}
+@keyframes htilt{from{transform:rotate(-9deg)}to{transform:rotate(9deg)}}
+.mas.hi .ar{animation:armR .5s ease-in-out 6 alternate}
+.mas.cheer .body{animation:hop .5s ease-out 3}
+.mas.cheer .al{transform:rotate(150deg)}.mas.cheer .ar{transform:rotate(-150deg)}
+.mas.dance{animation:sway 1.6s ease-in-out infinite}
+.mas.dance .body{animation:boogie .8s ease-in-out infinite alternate}
+.mas.dance .al{animation:armL .8s ease-in-out infinite alternate}
+.mas.dance .ar{animation:armR2 .8s ease-in-out infinite alternate-reverse}
+.mas.dance .head{animation:htilt .8s ease-in-out infinite alternate}
+.mas.dance .tail{animation-duration:.5s}
+.mas.sad .body{animation:none;transform:scaleY(.96)}.mas.sad .head{transform:rotate(14deg) translateY(4px)}.mas.sad .tail{animation:none;transform:rotate(35deg)}.mas.sad .al{transform:rotate(-10deg)}.mas.sad .ar{transform:rotate(10deg)}
 </style></head><body><div id="app"></div>
 <nav id="nav"></nav>
 <script>
@@ -274,6 +300,8 @@ const K=w=>(legacy?"":s.tl+":")+w[0],mastered=()=>allW.filter(w=>(s.known[K(w)]|
 function webSay(x,l){try{const u=new SpeechSynthesisUtterance(x);u.lang=l;u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
 function say(x){x=x.split("~")[0];const l=TT[s.tl==null?0:s.tl],T=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.TextToSpeech;if(!T)return webSay(x,l);
 Promise.resolve().then(()=>T.stop()).catch(()=>{}).then(()=>T.speak({text:x,lang:l,rate:.9,pitch:1,volume:1})).catch(()=>T.speak({text:x,lang:l.slice(0,2),rate:.9,pitch:1,volume:1})).catch(()=>webSay(x,l))}
+const MAS=`<div class="mw"><svg viewBox="0 0 120 160" class="mas @C@"><defs><radialGradient id="gf" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#d3d9e2"/><stop offset=".55" stop-color="#a3acb8"/><stop offset="1" stop-color="#6c7583"/></radialGradient><radialGradient id="gw" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#cfd5df"/></radialGradient></defs><ellipse class="sh" cx="60" cy="152" rx="32" ry="6" fill="#000" opacity=".2"/><g class="body" style="transform-origin:60px 150px"><g class="tail" style="transform-origin:84px 128px"><path d="M84 128q30-2 28-34" stroke="#8e98a5" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M112 94v-4" stroke="#59616e" stroke-width="9" stroke-linecap="round"/></g><ellipse cx="46" cy="146" rx="12" ry="7" fill="url(#gw)"/><ellipse cx="74" cy="146" rx="12" ry="7" fill="url(#gw)"/><ellipse cx="60" cy="112" rx="27" ry="31" fill="url(#gf)"/><ellipse cx="60" cy="119" rx="15" ry="20" fill="url(#gw)"/><path d="M36 104h8M35 114h8M84 104h-8M85 114h-8" stroke="#59616e" stroke-width="3" stroke-linecap="round"/><g class="al" style="transform-origin:38px 98px"><path d="M38 98q-14 4-16 26" stroke="#a3acb8" stroke-width="11" stroke-linecap="round" fill="none"/><circle cx="22" cy="125" r="7" fill="url(#gw)"/></g><g class="ar" style="transform-origin:82px 98px"><path d="M82 98q14 4 16 26" stroke="#a3acb8" stroke-width="11" stroke-linecap="round" fill="none"/><circle cx="98" cy="125" r="7" fill="url(#gw)"/></g><g class="head" style="transform-origin:60px 80px"><g transform="translate(20 8) scale(.8)"><polygon points="22,42 26,10 48,28" fill="#8e98a5"/><polygon points="78,42 74,10 52,28" fill="#8e98a5"/><polygon points="28,34 30,19 41,28" fill="#f9a8d4"/><polygon points="72,34 70,19 59,28" fill="#f9a8d4"/><circle cx="50" cy="58" r="31" fill="url(#gf)"/><path d="M50 29v9M41 31l2 8M59 31l-2 8M20 54h9M21 63h9M80 54h-9M79 63h-9" stroke="#59616e" stroke-width="4" stroke-linecap="round" fill="none"/><ellipse cx="50" cy="68" rx="15" ry="11" fill="url(#gw)"/><g class="eyes"><circle cx="38" cy="53" r="5" fill="#1d2433"/><circle cx="62" cy="53" r="5" fill="#1d2433"/><circle cx="39.8" cy="51.2" r="1.7" fill="#fff"/><circle cx="63.8" cy="51.2" r="1.7" fill="#fff"/></g><path d="M46 62h8l-4 5z" fill="#f472b6"/><path d="M50 67v3M50 70q-4 4-8 1M50 70q4 4 8 1" stroke="#59616e" stroke-width="2" stroke-linecap="round" fill="none"/></g></g></g></svg></div>`;
+const mas=c=>MAS.replace("@C@",c),hm=()=>`<div class="hero2">${mas("hi")}</div>`;
 const logoH=`<div class="lg">${LOGO}<h1>Kitty-Speakly</h1></div>`;
 function hdr(){return`<div class="top">${logoH}<div><span class="pill fire"><b>🔥</b> ${s.streak}</span> <span class="pill">⭐ ${s.xp}</span> <button class="pill" style="border:0" onclick="sN=s.nl;sL=s.tl;go('s')">🌐</button></div></div>`}
 function nav(){$("nav").innerHTML=[["w","📚",t(0)],["p","💬",t(1)]].concat(legacy?[["r","✏️","Gramática"],["n","🔢","Números"]]:[]).concat([["l","📖",t(2)],["g","🏆",t(3)]]).map(([k,i,n])=>`<button class="${tab==k?"on":""}" onclick="go('${k}')">${i}<br>${n}</button>`).join("")}
@@ -288,23 +316,23 @@ a.innerHTML=`<div class="top">${logoH}</div><div class="card"><b>${u[12]}</b><di
 function draw(){const a=$("app");$("nav").innerHTML="";
 if(tab=="s"||s.nl==null||s.tl==null)return setup(a);
 nav();if(Q)return quiz(a);
-if(tab=="w"){a.innerHTML=hdr()+vc()+(cats.length>1?`<div class="card"><div class="chips"><button class="chip ${cat<0?"on":""}" onclick="cat=-1;draw()">★</button>${cats.map((c,i)=>`<button class="chip ${cat==i?"on":""}" onclick="cat=${i};draw()">${c.n}</button>`).join("")}</div></div>`:"")+`<button class="btn" onclick="startW()">${t(4)}</button>`}
-else if(tab=="p"){a.innerHTML=hdr()+vc()+`<button class="btn" onclick="startP()">${t(5)} (${P.length})</button>`}
+if(tab=="w"){a.innerHTML=hdr()+hm()+vc()+(cats.length>1?`<div class="card"><div class="chips"><button class="chip ${cat<0?"on":""}" onclick="cat=-1;draw()">★</button>${cats.map((c,i)=>`<button class="chip ${cat==i?"on":""}" onclick="cat=${i};draw()">${c.n}</button>`).join("")}</div></div>`:"")+`<button class="btn" onclick="startW()">${t(4)}</button>`}
+else if(tab=="p"){a.innerHTML=hdr()+hm()+vc()+`<button class="btn" onclick="startP()">${t(5)} (${P.length})</button>`}
 else if(tab=="r"){a.innerHTML=hdr()+`<div class="card"><b>Gramática básica</b><p class="mu">• <b>To be:</b> I am · he/she/it is · you/we/they are<br>• <b>Do/Does:</b> does con he/she/it, do con los demás; luego el verbo sin -s<br>• <b>Have/Has:</b> has con he/she/it<br>• <b>There is/are:</b> is = uno · are = varios</p></div><button class="btn" onclick="startG()">Practicar 10 ejercicios</button>`}
 else if(tab=="n"){a.innerHTML=hdr()+`<div class="card"><b>Elige un nivel</b><div class="chips" style="margin-top:10px">${LV.map((l,i)=>`<button class="chip ${lv==i?"on":""}" onclick="lv=${i};draw()">${l[0]}–${l[1]}</button>`).join("")}</div></div><div class="card mu">💡 Ojo: <b>thirteen</b> (13) acentúa el final y <b>thirty</b> (30) el inicio.</div><button class="btn" onclick="startN()">Practicar 10 números</button>`}
 else if(tab=="l"){a.innerHTML=hdr()+`<div class="card"><b>${t(1)}</b>${P.map((p,i)=>`<div class="row"><div><div>${D(p[0])}</div><div class="mu">${D(p[1])}</div><div style="color:var(--ac)">↳ ${D(p[2])}</div><div class="mu">${D(p[3])}</div></div><button class="sp" onclick="say(P[${i}][0]+'. '+P[${i}][2])">🔊</button></div>`).join("")}</div><div class="card"><b>${t(0)}</b>${cats.map(c=>(cats.length>1?`<p style="margin:12px 0 4px"><b>${c.n}</b></p>`:"")+c.w.map(w=>`<div class="row"><span>${D(w[0])} <span class="mu">– ${D(w[1])}</span></span><button class="sp" onclick="say(allW[${allW.indexOf(w)}][0])">🔊</button></div>`).join("")).join("")}</div>`}
 else{const kn=x=>s.known[K(x)]||0,wp=allW.filter(w=>kn(w)>0).length,pp=P.filter(p=>kn(p)>0).length,br=(n,m)=>`<div class="bar" style="margin-top:8px"><i style="width:${n/m*100}%"></i></div>`;
-a.innerHTML=hdr()+`<div class="card"><div class="big">${wp} / ${allW.length}</div><div class="mu">${t(18)}</div>${br(wp,allW.length)}</div><div class="card"><div class="big">${mastered()} / ${allW.length}</div><div class="mu">${t(11)}</div>${br(mastered(),allW.length)}</div><div class="card"><div class="big">${pp} / ${P.length}</div><div class="mu">${t(19)}</div>${br(pp,P.length)}</div><div class="card"><div class="big">${s.cor||0} / ${s.tot||0}</div><div class="mu">${t(20)}</div></div>`}}
+a.innerHTML=hdr()+hm()+`<div class="card"><div class="big">${wp} / ${allW.length}</div><div class="mu">${t(18)}</div>${br(wp,allW.length)}</div><div class="card"><div class="big">${mastered()} / ${allW.length}</div><div class="mu">${t(11)}</div>${br(mastered(),allW.length)}</div><div class="card"><div class="big">${pp} / ${P.length}</div><div class="mu">${t(19)}</div>${br(pp,P.length)}</div><div class="card"><div class="big">${s.cor||0} / ${s.tot||0}</div><div class="mu">${t(20)}</div></div>`}}
 function startW(){const pool=cat<0?allW:cats[cat].w,src=pool.length>=4?pool:allW,kn=w=>s.known[K(w)]||0,rv=sh(src.filter(w=>kn(w)>0&&kn(w)<3)).slice(0,5),it=sh([...rv,...sh(src.filter(w=>kn(w)==0)),...sh(src.filter(w=>kn(w)>=3))].slice(0,10));
 Q={i:0,ok:0,q:it.map(w=>{const d=Math.random()<.5,o=sh(allW.filter(x=>x!=w&&x[d?1:0]!=w[d?1:0])).slice(0,3),ps=sh([w,...o]);return{pr:d?w[0]:w[1],sub:"",op:ps.map(x=>d?x[1]:x[0]),opS:ps.map(x=>x[0]),an:d?w[1]:w[0],k:K(w),sp:w[0],say:w[0],auto:d,info:w[0]+" = "+w[1]}})};draw()}
 function startP(){Q={i:0,ok:0,q:sh(P).slice(0,10).map(p=>{const o=sh([p,...sh(P.filter(x=>x!=p)).slice(0,2)]);return{pr:p[0],sub:p[1],op:o.map(x=>x[2]),opS:o.map(x=>x[2]),opT:o.map(x=>x[3]),an:p[2],k:K(p),sp:p[0],say:p[2],auto:1,info:p[3]}})};draw()}
 function quiz(a){if(Q.i>=Q.q.length){const d=new Date().toDateString();if(s.last!=d){const y=new Date(Date.now()-864e5).toDateString();s.streak=s.last==y?s.streak+1:1;s.last=d}save();
-const w=Q.ok>=7;a.innerHTML=hdr()+`<div class="card" style="text-align:center"><div class="hero ${w?"cel":"sad"}">${LOGO}</div><div class="big">${Q.ok} / ${Q.q.length}</div><p class="mu">${w?t(10):t(10).replace("🎉","💪")}</p></div><button class="btn" onclick="go(tab)">${t(7)}</button>`;if(w)boom(80);Q=null;return}
-const q=Q.q[Q.i];a.innerHTML=`<div class="bar"><i style="width:${Q.i/Q.q.length*100}%"></i></div><div class="card" style="margin-top:16px"><div class="mu">${Q.i+1}/${Q.q.length}</div><div class="big">${D(q.pr)} <button class="sp" onclick="say(Q.q[Q.i].sp)">🔊</button></div><div class="mu">${D(q.sub)}</div></div><div id="o">${q.op.map((o,i)=>`<button class="opt" onclick="pick(${i})">${D(o)}${q.opT?`<div class="mu">${D(q.opT[i])}</div>`:""}</button>`).join("")}</div><div id="f"></div>`;if(q.auto)say(q.sp)}
+const w=Q.ok>=7;a.innerHTML=hdr()+`<div class="card" style="text-align:center"><div class="hero2">${mas(w?"dance":"hi")}</div><div class="big">${Q.ok} / ${Q.q.length}</div><p class="mu">${w?t(10):t(10).replace("🎉","💪")}</p></div><button class="btn" onclick="go(tab)">${t(7)}</button>`;if(w)boom(80);Q=null;return}
+const q=Q.q[Q.i];a.innerHTML=`<div class="bar"><i style="width:${Q.i/Q.q.length*100}%"></i></div><div class="card" style="margin-top:16px"><div class="mq">${mas("")}</div><div class="mu">${Q.i+1}/${Q.q.length}</div><div class="big">${D(q.pr)} <button class="sp" onclick="say(Q.q[Q.i].sp)">🔊</button></div><div class="mu">${D(q.sub)}</div></div><div id="o">${q.op.map((o,i)=>`<button class="opt" onclick="pick(${i})">${D(o)}${q.opT?`<div class="mu">${D(q.opT[i])}</div>`:""}</button>`).join("")}</div><div id="f"></div>`;if(q.auto)say(q.sp)}
 function pick(i){const q=Q.q[Q.i],bs=document.querySelectorAll(".opt"),good=q.op[i]==q.an;
 bs.forEach((b,j)=>{b.onclick=()=>say(q.opS?q.opS[j]:q.say);b.innerHTML="🔊 "+b.innerHTML;if(q.op[j]==q.an)b.classList.add("ok");else if(j==i)b.classList.add("no")});
 s.tot=(s.tot||0)+1;if(good){s.cor=(s.cor||0)+1;Q.ok++;s.xp+=10;if(!q.ng)s.known[q.k]=(s.known[q.k]||0)+1}else if(!q.ng)s.known[q.k]=Math.max(0,(s.known[q.k]||0)-1);
-save();say(q.say||q.sp);Q.combo=good?(Q.combo||0)+1:0;if(good){boom(Q.combo%5==0?70:22);xpUp()}document.querySelector(".bar i").style.width=((Q.i+1)/Q.q.length*100)+"%";
+save();say(q.say||q.sp);Q.combo=good?(Q.combo||0)+1:0;if(good){boom(Q.combo%5==0?70:22);xpUp()}{const mm=document.querySelector(".mas");if(mm)mm.setAttribute("class","mas "+(good?"cheer":"sad"))}document.querySelector(".bar i").style.width=((Q.i+1)/Q.q.length*100)+"%";
 $("f").innerHTML=`<p class="mu"><button class="sp" style="float:right;margin-left:8px" onclick="say(Q.q[Q.i].say)">🔊</button>${good?t(8):t(9)} ${D(q.an)}${Q.combo>=3?` <b style="color:var(--ac)">🔥 x${Q.combo}</b>`:""}<br>🌐 ${D(q.info)}</p><button class="btn" onclick="Q.i++;draw()">${t(6)}</button>`}
 if(s.nl!=null&&s.tl!=null)loadPack();
 const cap=x=>x[0].toUpperCase()+x.slice(1),R=a=>a[Math.random()*a.length|0],LV=[[0,20],[10,100],[100,1000],[1000,9999]];let lv=1;
