@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><title>Kitty-Speakly</title>
+<meta name="theme-color" content="#2563eb"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#eaf3ff;--card:#fff;--tx:#0b1f4d;--mu:#5a74a8;--ac:#2563eb;--ac2:#06b6d4;--ac3:#38bdf8;--ok:#10b981;--no:#f43f5e;--bd:#cfe0ff;--g:linear-gradient(135deg,#1d4ed8,#2563eb 45%,#06b6d4);--sh:0 8px 24px rgba(37,99,235,.2)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#040b24;--card:#0b1a44;--tx:#eaf2ff;--mu:#8fb0e8;--ac:#60a5fa;--ac2:#22d3ee;--ac3:#38bdf8;--ok:#34d399;--no:#fb7185;--bd:#1c3375;--sh:0 8px 24px rgba(0,0,0,.45)}}
+:root[data-theme="dark"]{--bg:#040b24;--card:#0b1a44;--tx:#eaf2ff;--mu:#8fb0e8;--ac:#60a5fa;--ac2:#22d3ee;--ac3:#38bdf8;--ok:#34d399;--no:#fb7185;--bd:#1c3375;--sh:0 8px 24px rgba(0,0,0,.45)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);background-image:radial-gradient(circle at 90% -5%,rgba(6,182,212,.3),transparent 45%),radial-gradient(circle at -10% 20%,rgba(37,99,235,.3),transparent 40%);background-attachment:fixed;color:var(--tx);font-family:system-ui,-apple-system,Roboto,sans-serif}
+#app{max-width:520px;margin:auto;padding:16px 16px 110px}
+h1{font-size:22px;font-weight:900;margin:4px 0 12px;letter-spacing:-.5px;background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lg{display:flex;align-items:center;gap:8px}.lg h1{margin:0}.lg svg{width:46px;height:46px;flex:none}.top{display:flex;justify-content:space-between;align-items:center}
+.pill{background:var(--g);color:#fff;border-radius:20px;padding:6px 12px;font-size:14px;font-weight:800;box-shadow:var(--sh)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:18px;margin:12px 0;box-shadow:var(--sh)}
+button{font:inherit;color:inherit;cursor:pointer;transition:transform .12s}
+button:active{transform:scale(.96)}
+.btn{width:100%;padding:16px;border-radius:18px;border:0;background:var(--g);color:#fff;font-weight:800;font-size:17px;margin-top:10px;box-shadow:0 10px 24px rgba(37,99,235,.45)}
+.opt{display:block;width:100%;text-align:left;padding:16px;margin:10px 0;border-radius:18px;border:2px solid var(--bd);background:var(--card);font-size:17px;font-weight:600;box-shadow:var(--sh)}
+.opt.ok{border-color:var(--ok);background:rgba(16,185,129,.22);animation:pop .3s}
+.opt.no{border-color:var(--no);background:rgba(244,63,94,.22)}
+@keyframes pop{50%{transform:scale(1.04)}}
+.big{font-size:28px;font-weight:900;margin:6px 0}.mu{color:var(--mu);font-size:14px}
+.bar{height:12px;background:var(--bd);border-radius:8px;overflow:hidden}.bar i{display:block;height:100%;background:var(--g);border-radius:8px;transition:width .4s}
+nav{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));display:flex;background:var(--card);border:1px solid var(--bd);border-radius:26px;padding:6px;box-shadow:var(--sh);max-width:496px;margin:auto}
+nav button{flex:1;padding:8px 1px;border:0;background:none;font-size:10px;color:var(--mu);border-radius:20px;font-weight:600}
+nav button.on{background:var(--g);color:#fff;font-weight:800}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:9px 14px;border-radius:20px;border:2px solid var(--c,var(--ac));background:var(--card);font-size:14px;font-weight:700;color:var(--c,var(--ac))}
+.chip:nth-child(5n+1){--c:#2563eb}.chip:nth-child(5n+2){--c:#0ea5e9}.chip:nth-child(5n+3){--c:#06b6d4}.chip:nth-child(5n+4){--c:#6366f1}.chip:nth-child(5n){--c:#0891b2}
+.chip.on{background:var(--c);color:#fff;box-shadow:0 6px 14px rgba(0,0,0,.25)}
+.row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd);gap:8px}
+.sp{border:0;background:var(--g);border-radius:50%;width:38px;height:38px;font-size:17px;flex:none}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+@keyframes fire{0%,100%{transform:scale(1)}50%{transform:scale(1.2) rotate(-8deg)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes jump{0%,100%{transform:translateY(0)}30%{transform:translateY(-26px) rotate(-8deg)}60%{transform:translateY(0) rotate(8deg)}}
+@keyframes tilt{0%,100%{transform:rotate(0)}50%{transform:rotate(-10deg)}}
+@keyframes fly{to{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:0}}
+@keyframes rise{to{transform:translateY(-50px);opacity:0}}
+#app>*{animation:up .35s backwards}#app>*:nth-child(2){animation-delay:.06s}#app>*:nth-child(3){animation-delay:.12s}#app>*:nth-child(4){animation-delay:.18s}
+.opt.no{animation:shake .4s}
+.lg svg{animation:bob 3s ease-in-out infinite}
+.fire b{display:inline-block;animation:fire 1.4s infinite}
+.cf{position:fixed;width:9px;height:14px;border-radius:2px;pointer-events:none;z-index:99;animation:fly 1s ease-out forwards}
+.xp{position:fixed;left:50%;top:38%;margin-left:-40px;font-size:24px;font-weight:900;color:var(--ok);pointer-events:none;z-index:99;animation:rise .9s forwards}
+.hero{display:flex;justify-content:center}.hero svg{width:110px;height:110px;animation:none}.hero.cel svg{animation:jump .9s 2}.hero.sad svg{animation:tilt 1.6s infinite}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.mw{width:130px;perspective:500px}.hero2{display:flex;justify-content:center}
+.mq{float:right;width:62px;margin:-4px 0 4px 8px}.mq .mw{width:62px}
+.mas{display:block;width:100%;height:auto;overflow:visible;filter:drop-shadow(0 6px 5px rgba(0,0,0,.25));animation:sway 4s ease-in-out infinite}
+.mas .eyes{transform-box:fill-box;transform-origin:center;animation:blink 4s infinite}
+.mas .tail{animation:wag 2s ease-in-out infinite}
+.mas .body{animation:breath 3s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotateY(-10deg)}50%{transform:rotateY(10deg)}}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+@keyframes wag{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(14deg)}}
+@keyframes breath{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.025)}}
+@keyframes armR{from{transform:rotate(-125deg)}to{transform:rotate(-160deg)}}
+@keyframes armL{from{transform:rotate(25deg)}to{transform:rotate(150deg)}}
+@keyframes armR2{from{transform:rotate(-25deg)}to{transform:rotate(-150deg)}}
+@keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-22px)}}
+@keyframes boogie{0%{transform:translate(-7px,0) rotate(-6deg)}50%{transform:translate(0,-12px) rotate(0)}100%{transform:translate(7px,0) rotate(6deg)}}
+@keyframes htilt{from{transform:rotate(-9deg)}to{transform:rotate(9deg)}}
+.mas.hi .ar{animation:armR .5s ease-in-out 6 alternate}
+.mas.cheer .body{animation:hop .5s ease-out 3}
+.mas.cheer .al{transform:rotate(150deg)}.mas.cheer .ar{transform:rotate(-150deg)}
+.mas.dance{animation:sway 1.6s ease-in-out infinite}
+.mas.dance .body{animation:boogie .8s ease-in-out infinite alternate}
+.mas.dance .al{animation:armL .8s ease-in-out infinite alternate}
+.mas.dance .ar{animation:armR2 .8s ease-in-out infinite alternate-reverse}
+.mas.dance .head{animation:htilt .8s ease-in-out infinite alternate}
+.mas.dance .tail{animation-duration:.5s}
+.mas.sad .body{animation:none;transform:scaleY(.96)}.mas.sad .head{transform:rotate(14deg) translateY(4px)}.mas.sad .tail{animation:none;transform:rotate(35deg)}.mas.sad .al{transform:rotate(-10deg)}.mas.sad .ar{transform:rotate(10deg)}
+.mw.m3{width:150px;height:190px;perspective:none}.m3 canvas{width:100%;height:100%;display:block}.mq{width:72px}.mq .mw.m3{width:72px;height:94px}
+</style></head><body><div id="app"></div>
+<nav id="nav"></nav>
+<script src="three.min.js"></script>
+<script>window.THREE||document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r149/three.min.js"><\/script>')</script>
+<script>
+const WD=`Saludos|hello=hola,goodbye=adiós,please=por favor,thanks=gracias,sorry=perdón,yes=sí,no=no,welcome=bienvenido,friend=amigo,morning=mañana,night=noche,name=nombre,nice=agradable,excuse me=disculpe,again=otra vez,help=ayuda,maybe=quizás,today=hoy,tomorrow=mañana (día),yesterday=ayer,see you=nos vemos,good=bueno,bad=malo,well=bien,fine=bien/estoy bien,how=cómo,what=qué,where=dónde,when=cuándo,who=quién,why=por qué
+Familia|mother=madre,father=padre,brother=hermano,sister=hermana,son=hijo,daughter=hija,grandmother=abuela,grandfather=abuelo,uncle=tío,aunt=tía,cousin=primo,husband=esposo,wife=esposa,baby=bebé,child=niño,parent=padre/madre,family=familia,boy=chico,girl=chica,man=hombre,woman=mujer,people=gente,neighbor=vecino,boyfriend=novio,girlfriend=novia,twin=gemelo,nephew=sobrino,niece=sobrina,relative=pariente
+Números|one=uno,two=dos,three=tres,four=cuatro,five=cinco,six=seis,seven=siete,eight=ocho,nine=nueve,ten=diez,eleven=once,twelve=doce,twenty=veinte,thirty=treinta,fifty=cincuenta,hundred=cien,thousand=mil,first=primero,second=segundo,third=tercero,half=mitad,zero=cero,many=muchos,few=pocos,all=todo,none=ninguno,some=algunos,more=más,less=menos,double=doble
+Comida|water=agua,bread=pan,milk=leche,coffee=café,tea=té,juice=jugo,rice=arroz,meat=carne,chicken=pollo,fish=pescado,egg=huevo,cheese=queso,apple=manzana,banana=plátano,orange=naranja,grape=uva,strawberry=fresa,tomato=tomate,potato=papa,onion=cebolla,carrot=zanahoria,salad=ensalada,soup=sopa,sugar=azúcar,salt=sal,butter=mantequilla,cake=pastel,cookie=galleta,pizza=pizza,breakfast=desayuno,lunch=almuerzo,dinner=cena,hungry=hambriento,thirsty=sediento,delicious=delicioso,beer=cerveza,wine=vino,ice cream=helado,fruit=fruta,vegetable=verdura
+Casa|house=casa,room=habitación,kitchen=cocina,bathroom=baño,bedroom=dormitorio,door=puerta,window=ventana,table=mesa,chair=silla,bed=cama,sofa=sofá,lamp=lámpara,floor=piso,wall=pared,roof=techo,garden=jardín,key=llave,mirror=espejo,shower=ducha,towel=toalla,fridge=refrigerador,stove=estufa,plate=plato,cup=taza,glass=vaso,fork=tenedor,knife=cuchillo,spoon=cuchara,pillow=almohada,blanket=manta,stairs=escaleras,television=televisión,clock=reloj,carpet=alfombra
+Ciudad|city=ciudad,street=calle,road=camino,bridge=puente,building=edificio,store=tienda,market=mercado,bank=banco,hospital=hospital,school=escuela,church=iglesia,park=parque,restaurant=restaurante,hotel=hotel,airport=aeropuerto,station=estación,bus=autobús,train=tren,car=carro,bicycle=bicicleta,taxi=taxi,traffic=tráfico,corner=esquina,map=mapa,left=izquierda,right=derecha,straight=derecho,near=cerca,far=lejos,police=policía,library=biblioteca,museum=museo,pharmacy=farmacia,ticket=boleto,airplane=avión
+Verbos|to be=ser/estar,to have=tener,to do=hacer,to go=ir,to come=venir,to see=ver,to eat=comer,to drink=beber,to sleep=dormir,to work=trabajar,to study=estudiar,to read=leer,to write=escribir,to speak=hablar,to listen=escuchar,to walk=caminar,to run=correr,to buy=comprar,to sell=vender,to give=dar,to take=tomar,to want=querer,to need=necesitar,to like=gustar,to love=amar,to know=saber,to think=pensar,to understand=entender,to learn=aprender,to teach=enseñar,to play=jugar,to open=abrir,to close=cerrar,to call=llamar,to wait=esperar,to live=vivir,to help=ayudar,to ask=preguntar,to answer=responder,to find=encontrar,to leave=salir,to bring=traer,to cook=cocinar,to swim=nadar,to sing=cantar,to dance=bailar,to pay=pagar,to start=empezar,to finish=terminar,to remember=recordar
+Adjetivos|big=grande,small=pequeño,tall=alto,short=bajo/corto,long=largo,old=viejo,new=nuevo,young=joven,happy=feliz,sad=triste,angry=enojado,tired=cansado,beautiful=hermoso,ugly=feo,fast=rápido,slow=lento,hot=caliente,cold=frío,easy=fácil,difficult=difícil,cheap=barato,expensive=caro,clean=limpio,dirty=sucio,heavy=pesado,light=ligero,strong=fuerte,weak=débil,rich=rico,poor=pobre,full=lleno,empty=vacío,open=abierto,closed=cerrado,loud=ruidoso,quiet=silencioso,smart=inteligente,funny=gracioso,busy=ocupado,free=libre,safe=seguro,dangerous=peligroso
+Colores y tiempo|red=rojo,blue=azul,green=verde,yellow=amarillo,black=negro,white=blanco,brown=café,pink=rosado,purple=morado,gray=gris,day=día,week=semana,month=mes,year=año,hour=hora,minute=minuto,Monday=lunes,Tuesday=martes,Wednesday=miércoles,Thursday=jueves,Friday=viernes,Saturday=sábado,Sunday=domingo,spring=primavera,summer=verano,autumn=otoño,winter=invierno,now=ahora,later=después,early=temprano,late=tarde,always=siempre,never=nunca,sometimes=a veces,often=a menudo,weekend=fin de semana,time=tiempo
+Cuerpo y salud|head=cabeza,face=cara,eye=ojo,ear=oreja,nose=nariz,mouth=boca,tooth=diente,hair=cabello,neck=cuello,shoulder=hombro,arm=brazo,hand=mano,finger=dedo,leg=pierna,foot=pie,knee=rodilla,back=espalda,stomach=estómago,heart=corazón,skin=piel,doctor=doctor,nurse=enfermera,medicine=medicina,pain=dolor,fever=fiebre,cough=tos,cold (illness)=resfriado,headache=dolor de cabeza,sick=enfermo,healthy=sano,blood=sangre,bone=hueso,tongue=lengua,throat=garganta,allergy=alergia,emergency=emergencia
+Trabajo y escuela|work=trabajo,job=empleo,boss=jefe,office=oficina,meeting=reunión,salary=sueldo,company=empresa,customer=cliente,teacher=maestro,student=estudiante,class=clase,book=libro,pen=bolígrafo,pencil=lápiz,paper=papel,notebook=cuaderno,computer=computadora,phone=teléfono,email=correo,test=examen,homework=tarea,lesson=lección,question=pregunta,answer=respuesta,word=palabra,sentence=oración,language=idioma,price=precio,money=dinero,card=tarjeta,bag=bolsa,shirt=camisa,pants=pantalones,shoes=zapatos,dress=vestido,hat=sombrero,jacket=chaqueta,socks=calcetines,glasses=lentes
+Naturaleza y animales|sun=sol,moon=luna,star=estrella,sky=cielo,cloud=nube,rain=lluvia,snow=nieve,wind=viento,storm=tormenta,tree=árbol,flower=flor,grass=pasto,mountain=montaña,river=río,lake=lago,sea=mar,beach=playa,forest=bosque,island=isla,fire=fuego,earth=tierra,dog=perro,cat=gato,bird=pájaro,horse=caballo,cow=vaca,pig=cerdo,sheep=oveja,rabbit=conejo,mouse=ratón,lion=león,tiger=tigre,monkey=mono,elephant=elefante,snake=serpiente,bear=oso,wolf=lobo,butterfly=mariposa,bee=abeja,fish (animal)=pez,weather=clima,sunny=soleado,cloudy=nublado`;
+const PH=`How are you?|¿Cómo estás?|I'm fine, thank you. And you?|Estoy bien, gracias. ¿Y tú?
+What's your name?|¿Cómo te llamas?|My name is Anna.|Me llamo Anna.
+Nice to meet you.|Mucho gusto.|Nice to meet you too.|Igualmente.
+Where are you from?|¿De dónde eres?|I'm from Mexico.|Soy de México.
+How old are you?|¿Cuántos años tienes?|I'm twenty-five years old.|Tengo veinticinco años.
+Do you speak English?|¿Hablas inglés?|Yes, a little.|Sí, un poco.
+I don't understand.|No entiendo.|Can you repeat that, please?|¿Puedes repetirlo, por favor?
+Could you speak slowly?|¿Podrías hablar despacio?|Sure, no problem.|Claro, no hay problema.
+Thank you very much.|Muchas gracias.|You're welcome.|De nada.
+I'm sorry.|Lo siento.|It's okay. Don't worry.|Está bien. No te preocupes.
+Excuse me, where is the bathroom?|Disculpe, ¿dónde está el baño?|It's down the hall, on the left.|Está al fondo del pasillo, a la izquierda.
+How much is this?|¿Cuánto cuesta esto?|It's ten dollars.|Cuesta diez dólares.
+Can I pay by card?|¿Puedo pagar con tarjeta?|Yes, of course.|Sí, por supuesto.
+What time is it?|¿Qué hora es?|It's half past three.|Son las tres y media.
+What do you do?|¿A qué te dedicas?|I'm a teacher.|Soy maestro.
+Do you have any brothers or sisters?|¿Tienes hermanos?|Yes, I have one sister.|Sí, tengo una hermana.
+What's the weather like?|¿Cómo está el clima?|It's sunny and warm.|Está soleado y cálido.
+Can you help me?|¿Puedes ayudarme?|Of course. What do you need?|Por supuesto. ¿Qué necesitas?
+Where is the train station?|¿Dónde está la estación de tren?|Go straight and turn right.|Ve derecho y gira a la derecha.
+How do I get to the airport?|¿Cómo llego al aeropuerto?|Take the bus number five.|Toma el autobús número cinco.
+I'd like a coffee, please.|Quisiera un café, por favor.|Would you like milk or sugar?|¿Quiere leche o azúcar?
+Table for two, please.|Una mesa para dos, por favor.|Right this way.|Por aquí.
+Can I see the menu?|¿Puedo ver el menú?|Here you are.|Aquí tiene.
+What would you like to drink?|¿Qué le gustaría beber?|Just water, thanks.|Solo agua, gracias.
+The check, please.|La cuenta, por favor.|I'll bring it right away.|Se la traigo enseguida.
+I'm hungry.|Tengo hambre.|Let's eat something.|Comamos algo.
+I'm tired.|Estoy cansado.|You should get some rest.|Deberías descansar.
+I don't feel well.|No me siento bien.|Do you want to see a doctor?|¿Quieres ver a un doctor?
+I have a headache.|Me duele la cabeza.|Take some medicine.|Toma una medicina.
+Call an ambulance!|¡Llama a una ambulancia!|I'm calling right now!|¡Estoy llamando ahora mismo!
+Where do you live?|¿Dónde vives?|I live in a small apartment.|Vivo en un apartamento pequeño.
+What are you doing?|¿Qué estás haciendo?|I'm studying English.|Estoy estudiando inglés.
+What did you do yesterday?|¿Qué hiciste ayer?|I stayed at home.|Me quedé en casa.
+What are you going to do tomorrow?|¿Qué vas a hacer mañana?|I'm going to work.|Voy a trabajar.
+Do you like music?|¿Te gusta la música?|Yes, I love it!|¡Sí, me encanta!
+What's your favorite food?|¿Cuál es tu comida favorita?|I really like pizza.|Me gusta mucho la pizza.
+Would you like to come with me?|¿Quieres venir conmigo?|Sure, I'd love to.|Claro, me encantaría.
+Let's meet at six.|Nos vemos a las seis.|Sounds good.|Me parece bien.
+Are you ready?|¿Estás listo?|Just a minute.|Un momento.
+I'm late!|¡Llego tarde!|Hurry up!|¡Date prisa!
+Happy birthday!|¡Feliz cumpleaños!|Thank you!|¡Gracias!
+Good luck!|¡Buena suerte!|Thanks, I need it.|Gracias, lo necesito.
+Have a nice day.|Que tengas un buen día.|You too.|Tú también.
+See you later.|Hasta luego.|Take care.|Cuídate.
+Can I borrow your pen?|¿Puedo pedirte prestado tu bolígrafo?|Sure, here you go.|Claro, toma.
+What does this word mean?|¿Qué significa esta palabra?|It means "house".|Significa "casa".
+How do you spell your name?|¿Cómo se escribe tu nombre?|A-N-N-A.|A-N-N-A.
+Is this seat taken?|¿Está ocupado este asiento?|No, go ahead.|No, adelante.
+Do you have a reservation?|¿Tiene una reservación?|Yes, under Smith.|Sí, a nombre de Smith.
+I lost my keys.|Perdí mis llaves.|Where did you see them last?|¿Dónde las viste por última vez?
+Can I try this on?|¿Puedo probarme esto?|The fitting room is over there.|El probador está allá.
+What's your phone number?|¿Cuál es tu número de teléfono?|It's five five five, one two three four.|Es cinco cinco cinco, uno dos tres cuatro.
+I'm just looking, thanks.|Solo estoy mirando, gracias.|Let me know if you need anything.|Avíseme si necesita algo.
+I agree with you.|Estoy de acuerdo contigo.|I'm glad we think alike.|Me alegra que pensemos igual.
+I don't know.|No sé.|Let me check for you.|Déjame averiguarlo.`;
+const WD2=`Pronombres y preguntas|I=yo,you=tú,he=él,she=ella,it=eso,we=nosotros,they=ellos,my=mi,your=tu,his=su (de él),her=su (de ella),our=nuestro,their=su (de ellos),this=esto,that=eso (allá),these=estos,those=esos,which=cuál,whose=de quién,how much=cuánto,how many=cuántos,me=me/mí,him=lo/él,us=nos,them=los/las,mine=mío,yours=tuyo,something=algo,nothing=nada,everyone=todos,someone=alguien,everything=todo,here=aquí,there=allí
+Preposiciones y conectores|in=en,on=sobre,at=en (lugar/hora),under=debajo,behind=detrás,between=entre,next to=junto a,in front of=frente a,from=de (origen),to=a/hacia,with=con,without=sin,for=para/por,about=acerca de,after=después de,before=antes de,during=durante,until=hasta,around=alrededor,and=y,but=pero,or=o,because=porque,so=así que,if=si,then=entonces,also=también,very=muy,only=solo,already=ya,still=todavía,just=justo,even=incluso
+Más verbos|to get=obtener,to make=fabricar,to say=decir,to tell=contar,to try=intentar,to use=usar,to put=poner,to keep=guardar,to let=dejar,to begin=comenzar,to show=mostrar,to hear=oír,to feel=sentir,to look=mirar,to watch=observar,to meet=conocer,to send=enviar,to receive=recibir,to wear=vestir,to wash=lavar,to clean=limpiar,to travel=viajar,to visit=visitar,to arrive=llegar,to stay=quedarse,to change=cambiar,to carry=cargar,to choose=elegir,to win=ganar,to lose=perder,to forget=olvidar,to believe=creer,to hope=esperar (con ilusión),to miss=extrañar,to wake up=despertarse,to sit=sentarse,to turn on=encender,to turn off=apagar,to borrow=pedir prestado,to lend=prestar,to smile=sonreír,to laugh=reír,to cry=llorar,to drive=conducir,to fly=volar,to rest=descansar,to worry=preocuparse,to enjoy=disfrutar,to fix=arreglar
+Tecnología|internet=internet,website=sitio web,password=contraseña,screen=pantalla,keyboard=teclado,battery=batería,charger=cargador,message=mensaje,photo=foto,video=video,app=aplicación,file=archivo,link=enlace,download=descargar,upload=subir,click=hacer clic,search=buscar,online=en línea,wifi=wifi,camera=cámara,headphones=audífonos,speaker=altavoz,printer=impresora,social media=redes sociales,network=red,signal=señal,account=cuenta,update=actualizar,save=guardar,delete=borrar,device=dispositivo,video call=videollamada,voice=voz,notification=notificación
+Viajes y lugares|passport=pasaporte,luggage=equipaje,suitcase=maleta,flight=vuelo,gate=puerta de embarque,reservation=reservación,tourist=turista,guide=guía,customs=aduana,departure=salida (viaje),arrival=llegada,delay=retraso,seat=asiento,round trip=ida y vuelta,one way=solo ida,sightseeing=turismo,souvenir=recuerdo,hostel=hostal,elevator=ascensor,entrance=entrada,exit=salida,subway=metro,platform=andén,fare=tarifa,address=dirección,country=país,border=frontera,village=pueblo,coast=costa,desert=desierto,valley=valle,cinema=cine,theater=teatro,stadium=estadio,supermarket=supermercado,bakery=panadería,gas station=gasolinera,post office=correo
+Compras y ropa|shopping=compras,size=talla,discount=descuento,sale=oferta,receipt=recibo,cash=efectivo,change=cambio (dinero),wallet=cartera,purse=bolso,coat=abrigo,sweater=suéter,jeans=jeans,skirt=falda,shorts=pantalones cortos,underwear=ropa interior,scarf=bufanda,gloves=guantes,belt=cinturón,boots=botas,sandals=sandalias,sneakers=tenis,pocket=bolsillo,button=botón,suit=traje,tie=corbata,ring=anillo,necklace=collar,umbrella=paraguas,backpack=mochila,perfume=perfume,cart=carrito,bargain=ganga,brand=marca
+Emociones|excited=emocionado,bored=aburrido,nervous=nervioso,worried=preocupado,proud=orgulloso,shy=tímido,brave=valiente,kind=amable,rude=grosero,lazy=perezoso,honest=honesto,generous=generoso,friendly=amistoso,serious=serio,calm=tranquilo,jealous=celoso,lonely=solitario,surprised=sorprendido,scared=asustado,confused=confundido,curious=curioso,patient=paciente,polite=educado,creative=creativo,selfish=egoísta,sleepy=somnoliento,love=amor,fear=miedo,hope=esperanza,dream=sueño,joy=alegría,peace=paz,trust=confianza,luck=suerte,secret=secreto
+Deportes y ocio|sport=deporte,soccer=fútbol,basketball=baloncesto,baseball=béisbol,tennis=tenis,swimming=natación,team=equipo,player=jugador,coach=entrenador,ball=pelota,game=juego,match=partido,goal=gol,race=carrera,gym=gimnasio,exercise=ejercicio,hobby=pasatiempo,movie=película,song=canción,concert=concierto,guitar=guitarra,piano=piano,camping=acampar,fishing=pesca,hiking=senderismo,party=fiesta,gift=regalo,holiday=vacaciones,birthday=cumpleaños,wedding=boda,toy=juguete,puzzle=rompecabezas,novel=novela,magazine=revista,newspaper=periódico,story=historia,joke=chiste
+Objetos del hogar|soap=jabón,shampoo=champú,toothbrush=cepillo de dientes,toothpaste=pasta dental,comb=peine,toilet=inodoro,sink=lavabo,bathtub=bañera,oven=horno,microwave=microondas,washing machine=lavadora,iron=plancha,broom=escoba,trash=basura,bottle=botella,bowl=tazón,pan=sartén,pot=olla,drawer=cajón,shelf=estante,closet=armario,curtain=cortina,garage=garaje,balcony=balcón,basement=sótano,fence=cerca,mailbox=buzón,candle=vela,box=caja,rope=cuerda,hammer=martillo,light bulb=bombilla,fan=ventilador
+Profesiones y sociedad|engineer=ingeniero,lawyer=abogado,farmer=agricultor,driver=conductor,cook=cocinero,waiter=mesero,dentist=dentista,artist=artista,singer=cantante,pilot=piloto,firefighter=bombero,mechanic=mecánico,secretary=secretaria,manager=gerente,worker=obrero,scientist=científico,writer=escritor,actor=actor,soldier=soldado,judge=juez,baker=panadero,butcher=carnicero,cashier=cajero,guest=invitado,owner=dueño,government=gobierno,law=ley,vote=voto,war=guerra,history=historia,culture=cultura,news=noticias`;
+const PH2=`Are you a student?|¿Eres estudiante?|Yes, I am.|Sí, lo soy.
+Is she your sister?|¿Es ella tu hermana?|No, she isn't. She's my cousin.|No, es mi prima.
+Are they at home?|¿Están en casa?|No, they aren't.|No, no están.
+Do you like coffee?|¿Te gusta el café?|Yes, I do.|Sí, me gusta.
+Does he work here?|¿Él trabaja aquí?|No, he doesn't.|No, no trabaja aquí.
+Do they speak Spanish?|¿Hablan español?|Yes, they do.|Sí, hablan.
+Does she have a car?|¿Ella tiene carro?|Yes, she does.|Sí, tiene.
+Where do you work?|¿Dónde trabajas?|I work in a bank.|Trabajo en un banco.
+What does he want?|¿Qué quiere él?|He wants a glass of water.|Quiere un vaso de agua.
+Why are you late?|¿Por qué llegas tarde?|Because of the traffic.|Por el tráfico.
+Who is that man?|¿Quién es ese hombre?|He's my new boss.|Es mi nuevo jefe.
+Which one do you prefer?|¿Cuál prefieres?|I prefer the blue one.|Prefiero el azul.
+How many people are there?|¿Cuánta gente hay?|There are about twenty.|Hay unas veinte.
+How long does it take?|¿Cuánto tarda?|It takes two hours.|Tarda dos horas.
+How far is it?|¿Qué tan lejos está?|It's five minutes away.|Está a cinco minutos.
+Is there a bank near here?|¿Hay un banco cerca?|Yes, there is, next to the park.|Sí, uno junto al parque.
+Can you swim?|¿Sabes nadar?|Yes, I can.|Sí, sé.
+Could I use your phone?|¿Podría usar tu teléfono?|Sure, go ahead.|Claro, adelante.
+What do you want to eat?|¿Qué quieres comer?|I want some chicken.|Quiero pollo.
+Do you want some more?|¿Quieres más?|No, thanks. I'm full.|No, gracias. Estoy lleno.
+What are you looking for?|¿Qué buscas?|I'm looking for my wallet.|Busco mi cartera.
+Have you ever been to London?|¿Has estado en Londres?|No, never.|No, nunca.
+How long have you lived here?|¿Cuánto llevas viviendo aquí?|For three years.|Tres años.
+What time do you wake up?|¿A qué hora te despiertas?|I wake up at seven.|A las siete.
+Do you have plans for the weekend?|¿Tienes planes para el fin de semana?|Not yet. Do you?|Aún no. ¿Y tú?
+What's your job?|¿Cuál es tu trabajo?|I'm a nurse.|Soy enfermera.
+Can I take a message?|¿Puedo tomar un mensaje?|Yes, please tell him I called.|Sí, dile que llamé.
+Is it far from here?|¿Queda lejos de aquí?|No, you can walk.|No, puedes ir caminando.
+What size are you?|¿Qué talla eres?|I'm a medium.|Soy mediana.
+Do you take credit cards?|¿Aceptan tarjetas de crédito?|Yes, we do.|Sí, aceptamos.
+Is breakfast included?|¿El desayuno está incluido?|Yes, from seven to ten.|Sí, de siete a diez.
+I'd like to book a room.|Quisiera reservar una habitación.|For how many nights?|¿Por cuántas noches?
+Where can I buy a ticket?|¿Dónde compro un boleto?|At the counter over there.|En el mostrador de allá.
+What's wrong?|¿Qué pasa?|I'm worried about my exam.|Me preocupa mi examen.
+Do you mind if I sit here?|¿Te importa si me siento aquí?|Not at all.|Para nada.
+Could you open the window?|¿Podrías abrir la ventana?|Of course.|Por supuesto.
+What's the matter with him?|¿Qué le pasa a él?|He has a stomachache.|Le duele el estómago.
+How was your day?|¿Cómo estuvo tu día?|It was great, thanks.|Estuvo genial, gracias.
+Did you sleep well?|¿Dormiste bien?|Yes, like a baby.|Sí, como un bebé.
+What did you have for lunch?|¿Qué almorzaste?|I had a sandwich.|Comí un sándwich.
+Where were you last night?|¿Dónde estabas anoche?|I was at the cinema.|En el cine.
+Who is calling?|¿Quién llama?|It's Peter from the office.|Es Peter de la oficina.
+Are you busy right now?|¿Estás ocupado ahora?|A little. Can I call you back?|Un poco. ¿Te llamo luego?
+Do you know him?|¿Lo conoces?|Yes, he's an old friend.|Sí, es un viejo amigo.
+Is this your bag?|¿Es esta tu bolsa?|No, it's not mine.|No, no es mía.
+What's the date today?|¿Qué fecha es hoy?|It's October sixteenth.|Es 16 de octubre.
+Do you need anything?|¿Necesitas algo?|No, I'm all set.|No, estoy listo.
+How do you say "gracias" in English?|¿Cómo se dice "gracias" en inglés?|You say "thank you".|Se dice "thank you".
+Does this bus go downtown?|¿Este autobús va al centro?|Yes, it does.|Sí, va.
+Congratulations!|¡Felicidades!|Thank you so much!|¡Muchas gracias!`;
+const LN=["English","Español","Português","中文","한국어","हिन्दी","Français","Italiano"],TT=["en-US","es-ES","pt-BR","zh-CN","ko-KR","hi-IN","fr-FR","it-IT"];
+const UI=[["Words","Phrases","List","Progress","Practice 10 words","Practice 10 phrases","Continue","Finish","✅ Correct!","❌ It was:","🎉 Session complete!","words mastered (3 correct)","I speak…","I want to learn…","Start"],
+["Palabras","Frases","Lista","Progreso","Practicar 10 palabras","Practicar 10 frases","Continuar","Terminar","✅ ¡Correcto!","❌ Era:","🎉 ¡Sesión completada!","palabras dominadas (3 aciertos)","Hablo…","Quiero aprender…","Empezar"],
+["Palavras","Frases","Lista","Progresso","Praticar 10 palavras","Praticar 10 frases","Continuar","Concluir","✅ Correto!","❌ Era:","🎉 Sessão concluída!","palavras dominadas (3 acertos)","Eu falo…","Quero aprender…","Começar"],
+["单词","短语","列表","进度","练习10个单词","练习10个短语","继续","完成","✅ 正确！","❌ 答案是：","🎉 练习完成！","已掌握单词（答对3次）","我说…","我想学…","开始"],
+["단어","문장","목록","진도","단어 10개 연습","문장 10개 연습","계속","완료","✅ 정답!","❌ 정답:","🎉 연습 완료!","마스터한 단어 (3번 정답)","내 언어…","배우고 싶은 언어…","시작"],
+["शब्द","वाक्य","सूची","प्रगति","10 शब्द अभ्यास","10 वाक्य अभ्यास","आगे","समाप्त","✅ सही!","❌ उत्तर था:","🎉 अभ्यास पूरा!","सीखे हुए शब्द (3 सही)","मैं बोलता हूँ…","मैं सीखना चाहता हूँ…","शुरू करें"],
+["Mots","Phrases","Liste","Progrès","S'entraîner : 10 mots","S'entraîner : 10 phrases","Continuer","Terminer","✅ Correct !","❌ C'était :","🎉 Séance terminée !","mots maîtrisés (3 bonnes réponses)","Je parle…","Je veux apprendre…","Commencer"],
+["Parole","Frasi","Elenco","Progressi","Allena 10 parole","Allena 10 frasi","Continua","Fine","✅ Corretto!","❌ Era:","🎉 Sessione completata!","parole padroneggiate (3 esatte)","Parlo…","Voglio imparare…","Inizia"]];
+const UX=[["🔊 No sound for this language? Install its voice.","Install voice","Settings → Language → Text-to-speech output → Google → Install voice data, then pick this language."],
+["🔊 ¿No se escucha este idioma? Instala su voz.","Instalar voz","Ajustes → Idioma → Salida de texto a voz → Google → Instalar datos de voz y elige este idioma."],
+["🔊 Sem som neste idioma? Instale a voz.","Instalar voz","Configurações → Idioma → Saída de texto para fala → Google → Instalar dados de voz e escolha este idioma."],
+["🔊 这个语言没有声音？请安装语音。","安装语音","设置 → 语言 → 文字转语音输出 → Google → 安装语音数据，然后选择该语言。"],
+["🔊 이 언어 소리가 안 나나요? 음성을 설치하세요.","음성 설치","설정 → 언어 → 텍스트 음성 변환 출력 → Google → 음성 데이터 설치 후 이 언어를 선택하세요."],
+["🔊 इस भाषा की आवाज़ नहीं आ रही? आवाज़ इंस्टॉल करें।","आवाज़ इंस्टॉल करें","सेटिंग्स → भाषा → टेक्स्ट-टू-स्पीच आउटपुट → Google → वॉइस डेटा इंस्टॉल करें और यह भाषा चुनें।"],
+["🔊 Pas de son pour cette langue ? Installez sa voix.","Installer la voix","Paramètres → Langue → Synthèse vocale → Google → Installer les données vocales, puis choisissez cette langue."],
+["🔊 Nessun audio per questa lingua? Installa la voce.","Installa voce","Impostazioni → Lingua → Sintesi vocale → Google → Installa dati vocali e scegli questa lingua."]];
+const UY=[["words with correct answers","phrases with correct answers","correct answers"],["palabras con aciertos","frases con aciertos","respuestas correctas"],["palavras com acertos","frases com acertos","respostas corretas"],["答对过的单词","答对过的短语","正确答案"],["맞힌 단어","맞힌 문장","정답 수"],["सही उत्तर वाले शब्द","सही उत्तर वाले वाक्य","सही उत्तर"],["mots avec bonnes réponses","phrases avec bonnes réponses","bonnes réponses"],["parole con risposte esatte","frasi con risposte esatte","risposte esatte"]];
+const NT=()=>window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.TextToSpeech;
+const CW=`hello|hola|olá|你好~nǐ hǎo|안녕하세요~annyeonghaseyo|नमस्ते~namaste|bonjour|ciao
+goodbye|adiós|tchau|再见~zàijiàn|안녕히 가세요~annyeonghi gaseyo|अलविदा~alvida|au revoir|arrivederci
+please|por favor|por favor|请~qǐng|제발~jebal|कृपया~kripaya|s'il vous plaît|per favore
+thank you|gracias|obrigado|谢谢~xièxie|감사합니다~gamsahamnida|धन्यवाद~dhanyavaad|merci|grazie
+yes|sí|sim|是~shì|네~ne|हाँ~haan|oui|sì
+no|no|não|不~bù|아니요~aniyo|नहीं~nahin|non|no
+sorry|perdón|desculpe|对不起~duìbuqǐ|죄송합니다~joesonghamnida|माफ़ कीजिए~maaf kijiye|désolé|scusa
+water|agua|água|水~shuǐ|물~mul|पानी~paani|eau|acqua
+food|comida|comida|食物~shíwù|음식~eumsik|भोजन~bhojan|nourriture|cibo
+bread|pan|pão|面包~miànbāo|빵~ppang|रोटी~roti|pain|pane
+milk|leche|leite|牛奶~niúnǎi|우유~uyu|दूध~doodh|lait|latte
+coffee|café|café|咖啡~kāfēi|커피~keopi|कॉफ़ी~kofi|café|caffè
+house|casa|casa|房子~fángzi|집~jip|घर~ghar|maison|casa
+mother|madre|mãe|妈妈~māma|어머니~eomeoni|माँ~maa|mère|madre
+father|padre|pai|爸爸~bàba|아버지~abeoji|पिता~pitaa|père|padre
+friend|amigo|amigo|朋友~péngyou|친구~chingu|दोस्त~dost|ami|amico
+man|hombre|homem|男人~nánrén|남자~namja|आदमी~aadmi|homme|uomo
+woman|mujer|mulher|女人~nǚrén|여자~yeoja|औरत~aurat|femme|donna
+child|niño|criança|孩子~háizi|아이~ai|बच्चा~bachcha|enfant|bambino
+one|uno|um|一~yī|하나~hana|एक~ek|un|uno
+two|dos|dois|二~èr|둘~dul|दो~do|deux|due
+three|tres|três|三~sān|셋~set|तीन~teen|trois|tre
+four|cuatro|quatro|四~sì|넷~net|चार~chaar|quatre|quattro
+five|cinco|cinco|五~wǔ|다섯~daseot|पाँच~paanch|cinq|cinque
+ten|diez|dez|十~shí|열~yeol|दस~das|dix|dieci
+red|rojo|vermelho|红色~hóngsè|빨간색~ppalgansaek|लाल~laal|rouge|rosso
+blue|azul|azul|蓝色~lánsè|파란색~paransaek|नीला~neela|bleu|blu
+green|verde|verde|绿色~lǜsè|초록색~choroksaek|हरा~hara|vert|verde
+big|grande|grande|大~dà|크다~keuda|बड़ा~bada|grand|grande
+small|pequeño|pequeno|小~xiǎo|작다~jakda|छोटा~chhota|petit|piccolo
+good|bueno|bom|好~hǎo|좋다~jota|अच्छा~achchha|bon|buono
+bad|malo|mau|坏~huài|나쁘다~nappeuda|बुरा~bura|mauvais|cattivo
+today|hoy|hoje|今天~jīntiān|오늘~oneul|आज~aaj|aujourd'hui|oggi
+tomorrow|mañana|amanhã|明天~míngtiān|내일~naeil|कल~kal|demain|domani
+day|día|dia|天~tiān|날~nal|दिन~din|jour|giorno
+night|noche|noite|夜晚~yèwǎn|밤~bam|रात~raat|nuit|notte
+sun|sol|sol|太阳~tàiyáng|해~hae|सूरज~sooraj|soleil|sole
+moon|luna|lua|月亮~yuèliang|달~dal|चाँद~chaand|lune|luna
+dog|perro|cachorro|狗~gǒu|개~gae|कुत्ता~kutta|chien|cane
+cat|gato|gato|猫~māo|고양이~goyangi|बिल्ली~billi|chat|gatto
+book|libro|livro|书~shū|책~chaek|किताब~kitaab|livre|libro
+school|escuela|escola|学校~xuéxiào|학교~hakgyo|स्कूल~skool|école|scuola
+love|amor|amor|爱~ài|사랑~sarang|प्यार~pyaar|amour|amore
+eat|comer|comer|吃~chī|먹다~meokda|खाना~khaana|manger|mangiare
+drink|beber|beber|喝~hē|마시다~masida|पीना~peena|boire|bere
+go|ir|ir|去~qù|가다~gada|जाना~jaana|aller|andare
+want|querer|querer|想要~xiǎngyào|원하다~wonhada|चाहना~chaahna|vouloir|volere
+speak|hablar|falar|说~shuō|말하다~malhada|बोलना~bolna|parler|parlare
+I|yo|eu|我~wǒ|저~jeo|मैं~main|je|io
+you|tú|você|你~nǐ|당신~dangsin|तुम~tum|tu|tu`;
+const CP=`How are you?|¿Cómo estás?|Como vai você?|你好吗？~nǐ hǎo ma?|잘 지내요?~jal jinaeyo?|आप कैसे हैं?~aap kaise hain?|Comment ça va ?|Come stai?
+I'm fine, thank you.|Estoy bien, gracias.|Estou bem, obrigado.|我很好，谢谢。~wǒ hěn hǎo, xièxie|잘 지내요, 감사합니다.~jal jinaeyo, gamsahamnida|मैं ठीक हूँ, धन्यवाद।~main theek hoon, dhanyavaad|Je vais bien, merci.|Sto bene, grazie.
+What's your name?|¿Cómo te llamas?|Qual é o seu nome?|你叫什么名字？~nǐ jiào shénme míngzi?|이름이 뭐예요?~ireumi mwoyeyo?|आपका नाम क्या है?~aapka naam kya hai?|Comment tu t'appelles ?|Come ti chiami?
+My name is Anna.|Me llamo Anna.|Meu nome é Anna.|我叫Anna。~wǒ jiào Anna|제 이름은 Anna예요.~je ireumeun Anna-yeyo|मेरा नाम Anna है।~mera naam Anna hai|Je m'appelle Anna.|Mi chiamo Anna.
+Where are you from?|¿De dónde eres?|De onde você é?|你是哪里人？~nǐ shì nǎlǐ rén?|어디에서 왔어요?~eodieseo wasseoyo?|आप कहाँ से हैं?~aap kahaan se hain?|Tu viens d'où ?|Di dove sei?
+I'm from Mexico.|Soy de México.|Sou do México.|我来自墨西哥。~wǒ láizì Mòxīgē|멕시코에서 왔어요.~meksikoeseo wasseoyo|मैं मेक्सिको से हूँ।~main meksiko se hoon|Je viens du Mexique.|Vengo dal Messico.
+Do you speak English?|¿Hablas inglés?|Você fala inglês?|你会说英语吗？~nǐ huì shuō yīngyǔ ma?|영어 할 수 있어요?~yeongeo hal su isseoyo?|क्या आप अंग्रेज़ी बोलते हैं?~kya aap angrezi bolte hain?|Parles-tu anglais ?|Parli inglese?
+Yes, a little.|Sí, un poco.|Sim, um pouco.|会一点。~huì yìdiǎn|네, 조금요.~ne, jogeumyo|हाँ, थोड़ा।~haan, thoda|Oui, un peu.|Sì, un po'.
+How much is this?|¿Cuánto cuesta esto?|Quanto custa isto?|这个多少钱？~zhège duōshao qián?|이거 얼마예요?~igeo eolmayeyo?|यह कितने का है?~yah kitne ka hai?|C'est combien ?|Quanto costa?
+It's ten dollars.|Cuesta diez dólares.|Custa dez dólares.|十美元。~shí měiyuán|10달러예요.~sip dalleoyeyo|दस डॉलर।~das dollar|Dix dollars.|Dieci dollari.
+Where is the bathroom?|¿Dónde está el baño?|Onde fica o banheiro?|洗手间在哪里？~xǐshǒujiān zài nǎlǐ?|화장실이 어디예요?~hwajangsiri eodiyeyo?|शौचालय कहाँ है?~shauchaalay kahaan hai?|Où sont les toilettes ?|Dov'è il bagno?
+Down the hall, on the left.|Al fondo, a la izquierda.|No fim do corredor, à esquerda.|走廊尽头，在左边。~zǒuláng jìntóu, zài zuǒbiān|복도 끝 왼쪽이에요.~bokdo kkeut oenjjogieyo|गलियारे के अंत में, बाईं ओर।~galiyaare ke ant mein, baayin or|Au bout du couloir, à gauche.|In fondo al corridoio, a sinistra.
+I don't understand.|No entiendo.|Não entendo.|我不明白。~wǒ bù míngbai|이해 못 해요.~ihae mot haeyo|मुझे समझ नहीं आया।~mujhe samajh nahin aaya|Je ne comprends pas.|Non capisco.
+I'll say it again, slowly.|Lo diré otra vez, despacio.|Vou repetir devagar.|我慢慢再说一遍。~wǒ mànmàn zài shuō yí biàn|천천히 다시 말할게요.~cheoncheonhi dasi malhalgeyo|मैं धीरे से फिर कहता हूँ।~main dheere se phir kehta hoon|Je répète lentement.|Lo ripeto lentamente.
+Thank you very much.|Muchas gracias.|Muito obrigado.|非常感谢。~fēicháng gǎnxiè|정말 감사합니다.~jeongmal gamsahamnida|बहुत धन्यवाद।~bahut dhanyavaad|Merci beaucoup.|Grazie mille.
+You're welcome.|De nada.|De nada.|不客气。~bú kèqi|천만에요.~cheonmaneyo|कोई बात नहीं।~koi baat nahin|De rien.|Prego.`;
+const LOGO=`<svg viewBox="0 0 100 100"><rect width="100" height="100" rx="24" fill="#2563eb"/><polygon points="22,42 26,10 48,28" fill="#8e98a5"/><polygon points="78,42 74,10 52,28" fill="#8e98a5"/><polygon points="28,34 30,19 41,28" fill="#f9a8d4"/><polygon points="72,34 70,19 59,28" fill="#f9a8d4"/><circle cx="50" cy="58" r="31" fill="#a3acb8"/><path d="M50 29v9M41 31l2 8M59 31l-2 8M20 54h9M21 63h9M80 54h-9M79 63h-9" stroke="#59616e" stroke-width="4" stroke-linecap="round" fill="none"/><ellipse cx="50" cy="68" rx="15" ry="11" fill="#fff"/><circle cx="38" cy="53" r="5" fill="#1d2433"/><circle cx="62" cy="53" r="5" fill="#1d2433"/><circle cx="39.8" cy="51.2" r="1.7" fill="#fff"/><circle cx="63.8" cy="51.2" r="1.7" fill="#fff"/><path d="M46 62h8l-4 5z" fill="#f472b6"/><path d="M50 67v3M50 70q-4 4-8 1M50 70q4 4 8 1" stroke="#59616e" stroke-width="2" stroke-linecap="round" fill="none"/></svg>`;
+let s={xp:0,streak:0,last:"",known:{},nl:null,tl:null},tab="w",cat=-1,Q=null,sN=null,sL=null,cats,allW,P,legacy;
+try{const x=localStorage.getItem("spk");if(x)s=Object.assign(s,JSON.parse(x))}catch(e){}
+const sh=a=>[...a].sort(()=>Math.random()-.5),$=id=>document.getElementById(id),t=i=>(i>17?UY:i>14?UX:UI)[s.nl==null?0:s.nl][i>17?i-18:i>14?i-15:i],D=x=>x.replace("~"," · "),save=()=>{try{localStorage.setItem("spk",JSON.stringify(s))}catch(e){}};
+function loadPack(){legacy=s.nl==1&&s.tl==0;
+if(legacy){cats=(WD+"\n"+WD2).split("\n").map(l=>{const[n,r]=l.split("|");return{n,w:r.split(",").map(x=>x.split("="))}});P=(PH+"\n"+PH2).split("\n").map(l=>l.split("|"))}
+else{const f=CW.split("\n").map(r=>r.split("|")),g=CP.split("\n").map(r=>r.split("|"));cats=[{n:"★",w:f.map(r=>[r[s.tl],r[s.nl]])}];P=[];for(let i=0;i<g.length;i+=2)P.push([g[i][s.tl],g[i][s.nl],g[i+1][s.tl],g[i+1][s.nl]])}
+allW=cats.flatMap(c=>c.w)}
+const K=w=>(legacy?"":s.tl+":")+w[0],mastered=()=>allW.filter(w=>(s.known[K(w)]||0)>=3).length;
+function webSay(x,l){try{const u=new SpeechSynthesisUtterance(x);u.lang=l;u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function say(x){x=x.split("~")[0];const l=TT[s.tl==null?0:s.tl],T=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.TextToSpeech;if(!T)return webSay(x,l);
+Promise.resolve().then(()=>T.stop()).catch(()=>{}).then(()=>T.speak({text:x,lang:l,rate:.9,pitch:1,volume:1})).catch(()=>T.speak({text:x,lang:l.slice(0,2),rate:.9,pitch:1,volume:1})).catch(()=>webSay(x,l))}
+let HAS3=false,R3,sc,cam,M3={},mS="";const RM=!!(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches);
+function init3(){try{if(!window.THREE)return;const T=THREE;R3=new T.WebGLRenderer({alpha:true,antialias:true});R3.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+sc=new T.Scene();cam=new T.PerspectiveCamera(30,.8,.1,50);cam.position.set(0,2,9);cam.lookAt(0,1.85,0);
+sc.add(new T.HemisphereLight(0xffffff,0x8899bb,.95));const L=new T.DirectionalLight(0xffffff,.85);L.position.set(2,5,4);sc.add(L);
+const mt=(c,r)=>new T.MeshStandardMaterial({color:c,roughness:r||.65}),G=mt(0xa3acb8),Dk=mt(0x59616e),W=mt(0xf4f6fa,.5),Pk=mt(0xf9a8d4),Ns=mt(0xf472b6),Ey=mt(0x1d2433,.3);
+const sp=(r,m,x,y,z,sx,sy,sz)=>{const o=new T.Mesh(new T.SphereGeometry(r,20,14),m);o.position.set(x,y,z);o.scale.set(sx||1,sy||1,sz||1);return o};
+const root=new T.Group(),body=sp(1,G,0,1.05,0,.85,.95,.75);root.add(body);root.add(sp(1,W,0,.98,.42,.55,.7,.4));
+const head=new T.Group();head.position.set(0,1.95,0);root.add(head);head.add(sp(1,G,0,.55,0,1.1,1,1));
+for(const k of[-1,1]){const e=new T.Mesh(new T.ConeGeometry(.4,.7,12),G);e.position.set(k*.7,1.4,0);e.rotation.z=-k*.35;head.add(e);
+const i=new T.Mesh(new T.ConeGeometry(.24,.5,12),Pk);i.position.set(k*.7,1.35,.12);i.rotation.z=-k*.35;head.add(i)}
+const eyes=[];for(const k of[-1,1]){const e=sp(.14,Ey,k*.4,.62,.9,1,1.3,.6);head.add(e);head.add(sp(.045,W,k*.37,.7,.98));eyes.push(e)}
+head.add(sp(.42,W,0,.22,.78,1.15,.8,.7));head.add(sp(.09,Ns,0,.33,1.06,1.3,.9,.8));
+for(const k of[-1,1]){const m=new T.Mesh(new T.TorusGeometry(.11,.017,6,12,Math.PI),Dk);m.position.set(k*.1,.22,1.05);m.rotation.z=Math.PI;head.add(m);
+for(const j of[-1,1]){const w=new T.Mesh(new T.CylinderGeometry(.008,.008,.7,4),Dk);w.position.set(k*.85,.2+j*.09,.78);w.rotation.set(0,-k*.5,Math.PI/2+j*k*.12);head.add(w)}
+for(const y of[.5,.36]){const s=new T.Mesh(new T.BoxGeometry(.3,.06,.05),Dk);s.position.set(k*.93,y,.4);s.rotation.y=k*1.1;head.add(s)}}
+for(const x of[-.2,0,.2]){const s=new T.Mesh(new T.BoxGeometry(.07,.3-Math.abs(x),.05),Dk);s.position.set(x,1.02-Math.abs(x)*.3,.85-Math.abs(x)*.4);s.rotation.x=-.55;head.add(s)}
+const arms=[-1,1].map(k=>{const g=new T.Group();g.position.set(k*.8,1.6,.05);const c=new T.Mesh(new T.CapsuleGeometry(.2,.5,6,12),G);c.position.y=-.4;g.add(c);g.add(sp(.25,W,0,-.85,0));root.add(g);return g});
+const feet=[-1,1].map(k=>{const f=sp(.32,W,k*.42,.2,.25,1,.6,1.4);root.add(f);return f});
+const tail=[];for(let i=0;i<7;i++){const s=sp(.19-i*.012,i>4?Dk:G,0,0,0);root.add(s);tail.push(s)}
+const sh=new T.Mesh(new T.CircleGeometry(1,24),new T.MeshBasicMaterial({color:0,transparent:true,opacity:.2}));sh.rotation.x=-Math.PI/2;sh.position.y=.02;sc.add(sh);sc.add(root);
+const C={ry:0,y:0,hx:0,hy:0,hz:0,al:.1,ar:.1,bz:0,ta:.35,sq:1,tl:0,tf:2.5};
+M3.upd=function(t){const ts=t-M3.t0,dt=Math.min(.05,Math.max(0,t-(M3.l||t)));M3.l=t;let s=mS;if((s=="hi"&&ts>3.2)||(s=="cheer"&&ts>1.8)||(s=="sad"&&ts>2.6))s="";
+const P={ry:Math.sin(t*.7)*.35,y:Math.sin(t*2)*.02,hx:0,hy:Math.sin(t*.8)*.25,hz:Math.sin(t*1.1)*.05,al:.12+Math.sin(t*2)*.04,ar:.12+Math.sin(t*2+1)*.04,bz:0,ta:.35,sq:1,tl:0,tf:2.5};
+if(s=="hi"){P.ry=0;P.hy=0;P.ar=2.7+Math.sin(ts*9)*.35}
+if(s=="cheer"){P.ry=0;P.y=Math.abs(Math.sin(ts*5.5))*.7;P.al=P.ar=2.9+Math.sin(ts*14)*.15;P.hx=-.15;P.ta=.7;P.tf=7}
+if(s=="sad"){P.ry=0;P.hx=.5;P.hy=0;P.hz=.15;P.al=P.ar=.04;P.y=-.04;P.ta=.08;P.sq=.55;P.tl=1}
+if(s=="dance"){P.ry=Math.sin(ts*3)*.7;P.y=Math.abs(Math.sin(ts*3))*.3;P.bz=Math.sin(ts*3)*.15;P.al=1.8+Math.sin(ts*6)*1.1;P.ar=1.8-Math.sin(ts*6)*1.1;P.hz=Math.sin(ts*6)*.25;P.hy=0;P.ta=.6;P.tf=6}
+for(const k in C)C[k]+=(P[k]-C[k])*.18;M3.ph=(M3.ph||0)+dt*C.tf;
+const bl=(t%3.7)<.12?.1:1;root.rotation.y=C.ry;root.rotation.z=C.bz;root.position.y=C.y;body.scale.y=.95*(1+Math.sin(t*2)*.015);
+head.rotation.set(C.hx,C.hy,C.hz);arms[0].rotation.z=-C.al;arms[1].rotation.z=C.ar;eyes.forEach(e=>{e.scale.y=1.3*C.sq*bl});
+const d=s=="dance";feet[0].position.y=.2+(d?Math.max(0,Math.sin(ts*6))*.25:0);feet[1].position.y=.2+(d?Math.max(0,-Math.sin(ts*6))*.25:0);
+tail.forEach((m,i)=>{const u=i/6;m.position.set(Math.sin(M3.ph-i*.7)*C.ta*u*1.4,.6+(1-C.tl)*i*.2-C.tl*i*.1,-.65-i*.1)});
+const k=1-C.y*.25;sh.scale.set(1.3*k,k,1);sh.material.opacity=.2-C.y*.1};
+(function loop(){requestAnimationFrame(loop);if(M3.host&&M3.host.isConnected){M3.upd(RM?0:performance.now()/1000);R3.render(sc,cam)}})();
+HAS3=true}catch(e){HAS3=false}}
+function attach(){if(!HAS3)return;const h=document.querySelector(".m3");if(!h){M3.host=null;return}
+if(R3.domElement.parentNode!==h)h.appendChild(R3.domElement);M3.host=h;mS=(h.dataset&&h.dataset.s)||"";M3.t0=performance.now()/1000;
+const w=h.clientWidth||100,hh=h.clientHeight||130;R3.setSize(w,hh,false);cam.aspect=w/hh;cam.updateProjectionMatrix()}
+function react(g){mS=g?"cheer":"sad";M3.t0=performance.now()/1000;const mm=document.querySelector(".mas");if(mm)mm.setAttribute("class","mas "+mS)}
+init3();
+const MAS=`<div class="mw"><svg viewBox="0 0 120 160" class="mas @C@"><defs><radialGradient id="gf" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#d3d9e2"/><stop offset=".55" stop-color="#a3acb8"/><stop offset="1" stop-color="#6c7583"/></radialGradient><radialGradient id="gw" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#cfd5df"/></radialGradient></defs><ellipse class="sh" cx="60" cy="152" rx="32" ry="6" fill="#000" opacity=".2"/><g class="body" style="transform-origin:60px 150px"><g class="tail" style="transform-origin:84px 128px"><path d="M84 128q30-2 28-34" stroke="#8e98a5" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M112 94v-4" stroke="#59616e" stroke-width="9" stroke-linecap="round"/></g><ellipse cx="46" cy="146" rx="12" ry="7" fill="url(#gw)"/><ellipse cx="74" cy="146" rx="12" ry="7" fill="url(#gw)"/><ellipse cx="60" cy="112" rx="27" ry="31" fill="url(#gf)"/><ellipse cx="60" cy="119" rx="15" ry="20" fill="url(#gw)"/><path d="M36 104h8M35 114h8M84 104h-8M85 114h-8" stroke="#59616e" stroke-width="3" stroke-linecap="round"/><g class="al" style="transform-origin:38px 98px"><path d="M38 98q-14 4-16 26" stroke="#a3acb8" stroke-width="11" stroke-linecap="round" fill="none"/><circle cx="22" cy="125" r="7" fill="url(#gw)"/></g><g class="ar" style="transform-origin:82px 98px"><path d="M82 98q14 4 16 26" stroke="#a3acb8" stroke-width="11" stroke-linecap="round" fill="none"/><circle cx="98" cy="125" r="7" fill="url(#gw)"/></g><g class="head" style="transform-origin:60px 80px"><g transform="translate(20 8) scale(.8)"><polygon points="22,42 26,10 48,28" fill="#8e98a5"/><polygon points="78,42 74,10 52,28" fill="#8e98a5"/><polygon points="28,34 30,19 41,28" fill="#f9a8d4"/><polygon points="72,34 70,19 59,28" fill="#f9a8d4"/><circle cx="50" cy="58" r="31" fill="url(#gf)"/><path d="M50 29v9M41 31l2 8M59 31l-2 8M20 54h9M21 63h9M80 54h-9M79 63h-9" stroke="#59616e" stroke-width="4" stroke-linecap="round" fill="none"/><ellipse cx="50" cy="68" rx="15" ry="11" fill="url(#gw)"/><g class="eyes"><circle cx="38" cy="53" r="5" fill="#1d2433"/><circle cx="62" cy="53" r="5" fill="#1d2433"/><circle cx="39.8" cy="51.2" r="1.7" fill="#fff"/><circle cx="63.8" cy="51.2" r="1.7" fill="#fff"/></g><path d="M46 62h8l-4 5z" fill="#f472b6"/><path d="M50 67v3M50 70q-4 4-8 1M50 70q4 4 8 1" stroke="#59616e" stroke-width="2" stroke-linecap="round" fill="none"/></g></g></g></svg></div>`;
+const mas=c=>HAS3?`<div class="mw m3" data-s="${c}"></div>`:MAS.replace("@C@",c),hm=()=>`<div class="hero2">${mas("hi")}</div>`;
+const logoH=`<div class="lg">${LOGO}<h1>Kitty-Speakly</h1></div>`;
+function hdr(){return`<div class="top">${logoH}<div><span class="pill fire"><b>🔥</b> ${s.streak}</span> <span class="pill">⭐ ${s.xp}</span> <button class="pill" style="border:0" onclick="sN=s.nl;sL=s.tl;go('s')">🌐</button></div></div>`}
+function nav(){$("nav").innerHTML=[["w","📚",t(0)],["p","💬",t(1)]].concat(legacy?[["r","✏️","Gramática"],["n","🔢","Números"]]:[]).concat([["l","📖",t(2)],["g","🏆",t(3)]]).map(([k,i,n])=>`<button class="${tab==k?"on":""}" onclick="go('${k}')">${i}<br>${n}</button>`).join("")}
+const vc=()=>NT()&&s.tl>1?`<div class="card mu">${t(15)}<button class="btn" onclick="instV()">${t(16)}</button></div>`:"";
+function instV(){Promise.resolve().then(()=>NT().openInstall()).catch(()=>alert(t(17)))}
+function boom(n){const C=["#2563eb","#06b6d4","#38bdf8","#f59e0b","#ec4899","#10b981"];for(let i=0;i<n;i++){const e=document.createElement("i");e.className="cf";e.style.cssText=`left:50%;top:45%;background:${R(C)};--x:${(Math.random()-.5)*360}px;--y:${-60-Math.random()*260}px;--r:${Math.random()*720}deg`;document.body.appendChild(e);setTimeout(()=>e.remove(),1000)}}
+function xpUp(){const e=document.createElement("div");e.className="xp";e.textContent="+10 XP";document.body.appendChild(e);setTimeout(()=>e.remove(),900)}
+function go(x){tab=x;Q=null;draw()}
+function fin(){s.nl=sN;s.tl=sL;save();loadPack();tab="w";draw()}
+function setup(a){const n=sN==null?0:sN,u=UI[n];
+a.innerHTML=`<div class="top">${logoH}</div><div class="card"><b>${u[12]}</b><div class="chips" style="margin-top:10px">${LN.map((x,i)=>`<button class="chip ${sN==i?"on":""}" onclick="sN=${i};if(sL==${i})sL=null;draw()">${x}</button>`).join("")}</div></div>`+(sN==null?"":`<div class="card"><b>${u[13]}</b><div class="chips" style="margin-top:10px">${LN.map((x,i)=>i==sN?"":`<button class="chip ${sL==i?"on":""}" onclick="sL=${i};draw()">${x}</button>`).join("")}</div></div>`)+(sN!=null&&sL!=null?`<button class="btn" onclick="fin()">${u[14]}</button>`:"")}
+function draw(){draw0();attach()}
+function draw0(){const a=$("app");$("nav").innerHTML="";
+if(tab=="s"||s.nl==null||s.tl==null)return setup(a);
+nav();if(Q)return quiz(a);
+if(tab=="w"){a.innerHTML=hdr()+hm()+vc()+(cats.length>1?`<div class="card"><div class="chips"><button class="chip ${cat<0?"on":""}" onclick="cat=-1;draw()">★</button>${cats.map((c,i)=>`<button class="chip ${cat==i?"on":""}" onclick="cat=${i};draw()">${c.n}</button>`).join("")}</div></div>`:"")+`<button class="btn" onclick="startW()">${t(4)}</button>`}
+else if(tab=="p"){a.innerHTML=hdr()+hm()+vc()+`<button class="btn" onclick="startP()">${t(5)} (${P.length})</button>`}
+else if(tab=="r"){a.innerHTML=hdr()+`<div class="card"><b>Gramática básica</b><p class="mu">• <b>To be:</b> I am · he/she/it is · you/we/they are<br>• <b>Do/Does:</b> does con he/she/it, do con los demás; luego el verbo sin -s<br>• <b>Have/Has:</b> has con he/she/it<br>• <b>There is/are:</b> is = uno · are = varios</p></div><button class="btn" onclick="startG()">Practicar 10 ejercicios</button>`}
+else if(tab=="n"){a.innerHTML=hdr()+`<div class="card"><b>Elige un nivel</b><div class="chips" style="margin-top:10px">${LV.map((l,i)=>`<button class="chip ${lv==i?"on":""}" onclick="lv=${i};draw()">${l[0]}–${l[1]}</button>`).join("")}</div></div><div class="card mu">💡 Ojo: <b>thirteen</b> (13) acentúa el final y <b>thirty</b> (30) el inicio.</div><button class="btn" onclick="startN()">Practicar 10 números</button>`}
+else if(tab=="l"){a.innerHTML=hdr()+`<div class="card"><b>${t(1)}</b>${P.map((p,i)=>`<div class="row"><div><div>${D(p[0])}</div><div class="mu">${D(p[1])}</div><div style="color:var(--ac)">↳ ${D(p[2])}</div><div class="mu">${D(p[3])}</div></div><button class="sp" onclick="say(P[${i}][0]+'. '+P[${i}][2])">🔊</button></div>`).join("")}</div><div class="card"><b>${t(0)}</b>${cats.map(c=>(cats.length>1?`<p style="margin:12px 0 4px"><b>${c.n}</b></p>`:"")+c.w.map(w=>`<div class="row"><span>${D(w[0])} <span class="mu">– ${D(w[1])}</span></span><button class="sp" onclick="say(allW[${allW.indexOf(w)}][0])">🔊</button></div>`).join("")).join("")}</div>`}
+else{const kn=x=>s.known[K(x)]||0,wp=allW.filter(w=>kn(w)>0).length,pp=P.filter(p=>kn(p)>0).length,br=(n,m)=>`<div class="bar" style="margin-top:8px"><i style="width:${n/m*100}%"></i></div>`;
+a.innerHTML=hdr()+hm()+`<div class="card"><div class="big">${wp} / ${allW.length}</div><div class="mu">${t(18)}</div>${br(wp,allW.length)}</div><div class="card"><div class="big">${mastered()} / ${allW.length}</div><div class="mu">${t(11)}</div>${br(mastered(),allW.length)}</div><div class="card"><div class="big">${pp} / ${P.length}</div><div class="mu">${t(19)}</div>${br(pp,P.length)}</div><div class="card"><div class="big">${s.cor||0} / ${s.tot||0}</div><div class="mu">${t(20)}</div></div>`}}
+function startW(){const pool=cat<0?allW:cats[cat].w,src=pool.length>=4?pool:allW,kn=w=>s.known[K(w)]||0,rv=sh(src.filter(w=>kn(w)>0&&kn(w)<3)).slice(0,5),it=sh([...rv,...sh(src.filter(w=>kn(w)==0)),...sh(src.filter(w=>kn(w)>=3))].slice(0,10));
+Q={i:0,ok:0,q:it.map(w=>{const d=Math.random()<.5,o=sh(allW.filter(x=>x!=w&&x[d?1:0]!=w[d?1:0])).slice(0,3),ps=sh([w,...o]);return{pr:d?w[0]:w[1],sub:"",op:ps.map(x=>d?x[1]:x[0]),opS:ps.map(x=>x[0]),an:d?w[1]:w[0],k:K(w),sp:w[0],say:w[0],auto:d,info:w[0]+" = "+w[1]}})};draw()}
+function startP(){Q={i:0,ok:0,q:sh(P).slice(0,10).map(p=>{const o=sh([p,...sh(P.filter(x=>x!=p)).slice(0,2)]);return{pr:p[0],sub:p[1],op:o.map(x=>x[2]),opS:o.map(x=>x[2]),opT:o.map(x=>x[3]),an:p[2],k:K(p),sp:p[0],say:p[2],auto:1,info:p[3]}})};draw()}
+function quiz(a){if(Q.i>=Q.q.length){const d=new Date().toDateString();if(s.last!=d){const y=new Date(Date.now()-864e5).toDateString();s.streak=s.last==y?s.streak+1:1;s.last=d}save();
+const w=Q.ok>=7;a.innerHTML=hdr()+`<div class="card" style="text-align:center"><div class="hero2">${mas(w?"dance":"hi")}</div><div class="big">${Q.ok} / ${Q.q.length}</div><p class="mu">${w?t(10):t(10).replace("🎉","💪")}</p></div><button class="btn" onclick="go(tab)">${t(7)}</button>`;if(w)boom(80);Q=null;return}
+const q=Q.q[Q.i];a.innerHTML=`<div class="bar"><i style="width:${Q.i/Q.q.length*100}%"></i></div><div class="card" style="margin-top:16px"><div class="mq">${mas("")}</div><div class="mu">${Q.i+1}/${Q.q.length}</div><div class="big">${D(q.pr)} <button class="sp" onclick="say(Q.q[Q.i].sp)">🔊</button></div><div class="mu">${D(q.sub)}</div></div><div id="o">${q.op.map((o,i)=>`<button class="opt" onclick="pick(${i})">${D(o)}${q.opT?`<div class="mu">${D(q.opT[i])}</div>`:""}</button>`).join("")}</div><div id="f"></div>`;if(q.auto)say(q.sp)}
+function pick(i){const q=Q.q[Q.i],bs=document.querySelectorAll(".opt"),good=q.op[i]==q.an;
+bs.forEach((b,j)=>{b.onclick=()=>say(q.opS?q.opS[j]:q.say);b.innerHTML="🔊 "+b.innerHTML;if(q.op[j]==q.an)b.classList.add("ok");else if(j==i)b.classList.add("no")});
+s.tot=(s.tot||0)+1;if(good){s.cor=(s.cor||0)+1;Q.ok++;s.xp+=10;if(!q.ng)s.known[q.k]=(s.known[q.k]||0)+1}else if(!q.ng)s.known[q.k]=Math.max(0,(s.known[q.k]||0)-1);
+save();say(q.say||q.sp);Q.combo=good?(Q.combo||0)+1:0;if(good){boom(Q.combo%5==0?70:22);xpUp()}react(good);document.querySelector(".bar i").style.width=((Q.i+1)/Q.q.length*100)+"%";
+$("f").innerHTML=`<p class="mu"><button class="sp" style="float:right;margin-left:8px" onclick="say(Q.q[Q.i].say)">🔊</button>${good?t(8):t(9)} ${D(q.an)}${Q.combo>=3?` <b style="color:var(--ac)">🔥 x${Q.combo}</b>`:""}<br>🌐 ${D(q.info)}</p><button class="btn" onclick="Q.i++;draw()">${t(6)}</button>`}
+if(s.nl!=null&&s.tl!=null)loadPack();
+const cap=x=>x[0].toUpperCase()+x.slice(1),R=a=>a[Math.random()*a.length|0],LV=[[0,20],[10,100],[100,1000],[1000,9999]];let lv=1;
+const SUBJ=[["I","am","do","have","yo",0],["You","are","do","have","tú",1],["He","is","does","has","él",2],["She","is","does","has","ella",2],["We","are","do","have","nosotros",3],["They","are","do","have","ellos",4]];
+const CJ=(v,i)=>{const e=v.slice(-2),b=v.slice(0,-2);return b+[["o","as","a","amos","an"],["o","es","e","emos","en"],["o","es","e","imos","en"]][e=="ar"?0:e=="er"?1:2][i]};
+const SER=["soy","eres","es","somos","son"],EST=["estoy","estás","está","estamos","están"],TEN=["tengo","tienes","tiene","tenemos","tienen"];
+const ON=["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"],TN=["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+function n2w(n){if(n<20)return ON[n];if(n<100)return TN[n/10|0]+(n%10?"-"+ON[n%10]:"");if(n<1000)return ON[n/100|0]+" hundred"+(n%100?" "+n2w(n%100):"");return n2w(n/1000|0)+" thousand"+(n%1000?" "+n2w(n%1000):"")}
+function mk(pr,an,op,full,info,es){return{pr,sub:"✏️ "+es,op:sh(op),an,k:"g"+pr,sp:full,say:full,info:full+" = "+es+" — "+info,ng:1}}
+function gq(){const t=R(["be","be","do","do","have","there"]),s=R(SUBJ),sl=s[0]=="I"?"I":s[0].toLowerCase(),m=Math.random(),pi=s[5],pn=s[4],pc=cap(pn);
+if(t=="be"){const[r,vt,m1,f1,pl]=R([["a student","s","estudiante","estudiante","estudiantes"],["happy","e","feliz","feliz","felices"],["from Mexico","s","de México","de México","de México"],["at home","e","en casa","en casa","en casa"],["tired","e","cansado","cansada","cansados"],["in the park","e","en el parque","en el parque","en el parque"],["ready","e","listo","lista","listos"],["a teacher","s","maestro","maestra","maestros"]]),vb=(vt=="s"?SER:EST)[pi],pd=pi>2?pl:(s[0]=="She"?f1:m1),i="I→am · he/she→is · you/we/they→are";
+if(m<.35)return mk(`${s[0]} ___ ${r}.`,s[1],["am","is","are"],`${s[0]} ${s[1]} ${r}.`,i,`${pc} ${vb} ${pd}.`);
+if(m<.7)return mk(`___ ${sl} ${r}?`,cap(s[1]),["Am","Is","Are"],`${cap(s[1])} ${sl} ${r}?`,i,`¿${cap(vb)} ${pn} ${pd}?`);
+return mk(`${s[0]} ___ not ${r}.`,s[1],["am","is","are"],`${s[0]} ${s[1]} not ${r}.`,i,`${pc} no ${vb} ${pd}.`)}
+if(t=="do"){const[v,inf,rs]=R([["listen to music","escuchar","música"],["work here","trabajar","aquí"],["speak English","hablar","inglés"],["live here","vivir","aquí"],["cook dinner","cocinar","la cena"],["eat meat","comer","carne"],["study at night","estudiar","de noche"]]),cj=CJ(inf,pi),i="he/she→does · los demás→do · luego el verbo sin -s";
+if(m<.35)return mk(`___ ${sl} ${v}?`,cap(s[2]),["Do","Does"],`${cap(s[2])} ${sl} ${v}?`,i,`¿${cap(cj)} ${pn} ${rs}?`);
+if(m<.7)return mk(`${s[0]} ___ not ${v}.`,s[2],["do","does"],`${s[0]} ${s[2]} not ${v}.`,i,`${pc} no ${cj} ${rs}.`);
+const[b,t3,vi]=R([["run","runs","correr"],["work","works","trabajar"],["study","studies","estudiar"],["cook","cooks","cocinar"],["walk","walks","caminar"],["swim","swims","nadar"]]),a=s[2]=="does"?t3:b;
+return mk(`${s[0]} ___ every day.`,a,[b,t3],`${s[0]} ${a} every day.`,"he/she→verbo + s",`${pc} ${CJ(vi,pi)} todos los días.`)}
+if(t=="have"){const[o,eo]=R([["a dog","un perro"],["a car","un carro"],["a brother","un hermano"],["a new phone","un teléfono nuevo"],["a big family","una familia grande"]]);return mk(`${s[0]} ___ ${o}.`,s[3],["have","has"],`${s[0]} ${s[3]} ${o}.`,"he/she→has · los demás→have",`${pc} ${TEN[pi]} ${eo}.`)}
+const n=R([1,2,3,5]),[g,p,eg,ep,ar]=R([["book","books","libro","libros","un"],["apple","apples","manzana","manzanas","una"],["chair","chairs","silla","sillas","una"],["student","students","estudiante","estudiantes","un"]]);
+return mk(`There ___ ${n==1?"one "+g:n+" "+p} in the room.`,n==1?"is":"are",["is","are"],`There ${n==1?"is":"are"} ${n==1?"one "+g:n+" "+p} in the room.`,"is→uno · are→varios",n==1?`Hay ${ar} ${eg} en la habitación.`:`Hay ${n} ${ep} en la habitación.`)}
+function nq(){const[a,b]=LV[lv],n=a+Math.random()*(b-a+1)|0,w=n2w(n),c=new Set([n+1,n-1,n+10,n-10,n%100>12&&n%100<20?n-n%100+(n%10)*10:n+2]);
+while(c.size<8)c.add(a+Math.random()*(b-a+1)|0);const d=sh([...c].filter(x=>x!=n&&x>=a&&x<=b)).slice(0,3),m=Math.random()*3|0;
+const q={k:"n"+n,sp:w,say:w,ng:1,auto:1,info:n+" = "+w};
+const ns=sh([n,...d]);if(m==0)return{...q,pr:String(n),sub:"Elige cómo se escribe",op:ns.map(n2w),opS:ns.map(n2w),an:w};
+return{...q,pr:m==1?w:"🔊 Escucha",sub:m==1?"Elige el número":"¿Qué número escuchaste?",op:ns.map(String),opS:ns.map(n2w),an:String(n)}}
+const startG=()=>{Q={i:0,ok:0,q:Array.from({length:10},gq)};draw()},startN=()=>{Q={i:0,ok:0,q:Array.from({length:10},nq)};draw()};
+draw();
+</script></body></html>
