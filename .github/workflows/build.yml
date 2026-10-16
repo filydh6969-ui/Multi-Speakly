@@ -20,12 +20,18 @@ jobs:
       - name: Permitir motor de voz (TTS)
         run: sed -i 's#<application#<queries><intent><action android:name="android.intent.action.TTS_SERVICE"/></intent></queries>\n    <application#' android/app/src/main/AndroidManifest.xml
       - name: Icono del gatito
-        continue-on-error: true
         run: |
-          sudo apt-get install -y librsvg2-bin
-          mkdir -p assets
-          rsvg-convert -w 1024 -h 1024 icon.svg -o assets/icon-only.png
-          npx --yes @capacitor/assets generate --android --iconBackgroundColor '#2563eb'
+          sudo apt-get update && sudo apt-get install -y librsvg2-bin
+          R=android/app/src/main/res
+          sed 's/viewBox="0 0 100 100"/viewBox="-25 -25 150 150"/; s#<rect[^>]*/>##' icon.svg > fg.svg
+          for d in mdpi:48:108 hdpi:72:162 xhdpi:96:216 xxhdpi:144:324 xxxhdpi:192:432; do
+            IFS=: read n l f <<< "$d"
+            mkdir -p $R/mipmap-$n
+            rsvg-convert -w $l -h $l icon.svg -o $R/mipmap-$n/ic_launcher.png
+            cp $R/mipmap-$n/ic_launcher.png $R/mipmap-$n/ic_launcher_round.png
+            rsvg-convert -w $f -h $f fg.svg -o $R/mipmap-$n/ic_launcher_foreground.png
+          done
+          printf '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n  <color name="ic_launcher_background">#2563EB</color>\n</resources>\n' > $R/values/ic_launcher_background.xml
       - run: npx cap sync android
       - name: Build debug APK
         working-directory: android
@@ -34,5 +40,5 @@ jobs:
           ./gradlew assembleDebug
       - uses: actions/upload-artifact@v4
         with:
-          name: Multi-Speakly-APK
+          name: Multi-speakly-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
