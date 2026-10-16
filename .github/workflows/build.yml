@@ -34,5 +34,5 @@ jobs:
           ./gradlew assembleDebug
       - uses: actions/upload-artifact@v4
         with:
-          name: Speakly-APK
+          name: Multi-Speakly-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
