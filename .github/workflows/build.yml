@@ -18,7 +18,25 @@ jobs:
       - run: npm install
       - name: Copiar Three.js (mascota 3D)
         continue-on-error: true
-        run: cp node_modules/three/build/three.min.js www/three.min.js
+        run: |
+          cp node_modules/three/build/three.min.js www/three.min.js
+          cp node_modules/three/examples/js/loaders/GLTFLoader.js www/GLTFLoader.js
+          cp node_modules/three/examples/js/effects/OutlineEffect.js www/OutlineEffect.js
+      - name: Instalar Blender
+        continue-on-error: true
+        run: sudo apt-get update && (sudo apt-get install -y blender || sudo snap install blender --classic)
+      - name: Crear mascota 3D con Blender
+        continue-on-error: true
+        run: |
+          mkdir -p out
+          blender -b --python blender/build_mascot.py -- out
+          cp out/mascot.glb www/mascot.glb
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Mascota-Blender
+          path: out
+          if-no-files-found: ignore
       - run: npx cap add android
       - name: Permitir motor de voz (TTS)
         run: sed -i 's#<application#<queries><intent><action android:name="android.intent.action.TTS_SERVICE"/></intent></queries>\n    <application#' android/app/src/main/AndroidManifest.xml
