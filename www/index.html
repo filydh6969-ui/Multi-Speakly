@@ -74,6 +74,8 @@ nav button.on{background:var(--g);color:#fff;font-weight:800}
 .mas.dance .tail{animation-duration:.5s}
 .mas.sad .body{animation:none;transform:scaleY(.96)}.mas.sad .head{transform:rotate(14deg) translateY(4px)}.mas.sad .tail{animation:none;transform:rotate(35deg)}.mas.sad .al{transform:rotate(-10deg)}.mas.sad .ar{transform:rotate(10deg)}
 .mw.m3{width:150px;height:190px;perspective:none}.m3 canvas{width:100%;height:100%;display:block}.mq{width:72px}.mq .mw.m3{width:72px;height:94px}
+.inp{width:100%;padding:14px;font-size:18px;border-radius:14px;border:2px solid var(--bd);background:var(--card);color:var(--tx);margin:8px 0}.ans{min-height:52px;padding:8px;border:2px dashed var(--bd);border-radius:14px;margin:8px 0}
+.mw.m3{width:170px;height:215px}.mq{width:76px}.mq .mw.m3{width:76px;height:96px}
 </style></head><body><div id="app"></div>
 <nav id="nav"></nav>
 <script src="three.min.js"></script>
@@ -225,6 +227,16 @@ const UX=[["🔊 No sound for this language? Install its voice.","Install voice"
 ["🔊 Nessun audio per questa lingua? Installa la voce.","Installa voce","Impostazioni → Lingua → Sintesi vocale → Google → Installa dati vocali e scegli questa lingua."]];
 const UY=[["words with correct answers","phrases with correct answers","correct answers"],["palabras con aciertos","frases con aciertos","respuestas correctas"],["palavras com acertos","frases com acertos","respostas corretas"],["答对过的单词","答对过的短语","正确答案"],["맞힌 단어","맞힌 문장","정답 수"],["सही उत्तर वाले शब्द","सही उत्तर वाले वाक्य","सही उत्तर"],["mots avec bonnes réponses","phrases avec bonnes réponses","bonnes réponses"],["parole con risposte esatte","frasi con risposte esatte","risposte esatte"]];
 const NT=()=>window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.TextToSpeech;
+const WD3=`Verbos avanzados|to achieve=lograr,to allow=permitir,to appear=aparecer,to apply=aplicar,to avoid=evitar,to belong=pertenecer,to build=construir,to catch=atrapar,to celebrate=celebrar,to compare=comparar,to complain=quejarse,to continue=continuar,to create=crear,to decide=decidir,to describe=describir,to develop=desarrollar,to discover=descubrir,to discuss=discutir,to enter=entrar,to explain=explicar,to express=expresar,to follow=seguir,to gather=reunir,to improve=mejorar,to include=incluir,to invite=invitar,to join=unirse,to manage=gestionar,to mention=mencionar,to notice=notar,to offer=ofrecer,to organize=organizar,to prefer=preferir,to prepare=preparar,to promise=prometer,to protect=proteger,to provide=proporcionar,to recognize=reconocer,to reduce=reducir,to refuse=rechazar,to repeat=repetir,to require=requerir,to share=compartir,to suggest=sugerir,to support=apoyar,to wonder=preguntarse
+Vocabulario avanzado|achievement=logro,advice=consejo,agreement=acuerdo,attitude=actitud,behavior=comportamiento,benefit=beneficio,challenge=desafío,choice=elección,community=comunidad,condition=condición,confidence=confianza,connection=conexión,decision=decisión,difference=diferencia,education=educación,environment=medio ambiente,experience=experiencia,freedom=libertad,future=futuro,habit=hábito,health=salud,knowledge=conocimiento,leader=líder,memory=memoria,opinion=opinión,opportunity=oportunidad,patience=paciencia,pleasure=placer,problem=problema,reason=razón,research=investigación,responsibility=responsabilidad,result=resultado,safety=seguridad,society=sociedad,solution=solución,success=éxito,tradition=tradición,truth=verdad,value=valor,improvement=mejora,effort=esfuerzo,goal=meta,mistake=error,influence=influencia`;
+const UZ=[["Check","Listen and type what you hear","Type it in the language you're learning","Tap the words in order","✍️ Typing practice","🧩 Word order","🏆 Mixed challenge"],
+["Comprobar","Escucha y escribe lo que oyes","Escríbelo en el idioma que aprendes","Toca las palabras en orden","✍️ Práctica de escritura","🧩 Ordenar la frase","🏆 Desafío mixto"],
+["Verificar","Ouça e escreva o que ouviu","Escreva no idioma que você aprende","Toque nas palavras na ordem","✍️ Prática de escrita","🧩 Ordenar a frase","🏆 Desafio misto"],
+["检查","听并写下你听到的","用你正在学的语言写出来","按顺序点击单词","✍️ 书写练习","🧩 单词排序","🏆 综合挑战"],
+["확인","듣고 들은 내용을 입력하세요","배우는 언어로 입력하세요","단어를 순서대로 누르세요","✍️ 쓰기 연습","🧩 문장 순서 맞추기","🏆 종합 도전"],
+["जाँचें","सुनें और जो सुना उसे लिखें","जिस भाषा को सीख रहे हैं उसमें लिखें","शब्दों को क्रम से दबाएँ","✍️ लिखने का अभ्यास","🧩 वाक्य क्रम","🏆 मिश्रित चुनौती"],
+["Vérifier","Écoutez et écrivez ce que vous entendez","Écrivez-le dans la langue que vous apprenez","Touchez les mots dans l'ordre","✍️ Exercice d'écriture","🧩 Ordre des mots","🏆 Défi mixte"],
+["Verifica","Ascolta e scrivi ciò che senti","Scrivilo nella lingua che stai imparando","Tocca le parole in ordine","✍️ Esercizio di scrittura","🧩 Ordina la frase","🏆 Sfida mista"]];
 const CW=`hello|hola|olá|你好~nǐ hǎo|안녕하세요~annyeonghaseyo|नमस्ते~namaste|bonjour|ciao
 goodbye|adiós|tchau|再见~zàijiàn|안녕히 가세요~annyeonghi gaseyo|अलविदा~alvida|au revoir|arrivederci
 please|por favor|por favor|请~qǐng|제발~jebal|कृपया~kripaya|s'il vous plaît|per favore
@@ -274,7 +286,119 @@ go|ir|ir|去~qù|가다~gada|जाना~jaana|aller|andare
 want|querer|querer|想要~xiǎngyào|원하다~wonhada|चाहना~chaahna|vouloir|volere
 speak|hablar|falar|说~shuō|말하다~malhada|बोलना~bolna|parler|parlare
 I|yo|eu|我~wǒ|저~jeo|मैं~main|je|io
-you|tú|você|你~nǐ|당신~dangsin|तुम~tum|tu|tu`;
+you|tú|você|你~nǐ|당신~dangsin|तुम~tum|tu|tu
+to walk|caminar|andar|走路~zǒulù|걷다~geotda|चलना~chalna|marcher|camminare
+to run|correr|correr|跑~pǎo|달리다~dallida|दौड़ना~daudna|courir|correre
+to read|leer|ler|读~dú|읽다~ikda|पढ़ना~padhna|lire|leggere
+to write|escribir|escrever|写~xiě|쓰다~sseuda|लिखना~likhna|écrire|scrivere
+to listen|escuchar|ouvir|听~tīng|듣다~deutda|सुनना~sunna|écouter|ascoltare
+to see|ver|ver|看见~kànjiàn|보다~boda|देखना~dekhna|voir|vedere
+to open|abrir|abrir|打开~dǎkāi|열다~yeolda|खोलना~kholna|ouvrir|aprire
+to close|cerrar|fechar|关~guān|닫다~dadda|बंद करना~band karna|fermer|chiudere
+to buy|comprar|comprar|买~mǎi|사다~sada|खरीदना~khareedna|acheter|comprare
+to sell|vender|vender|卖~mài|팔다~palda|बेचना~bechna|vendre|vendere
+to give|dar|dar|给~gěi|주다~juda|देना~dena|donner|dare
+to take|tomar|pegar|拿~ná|가지다~gajida|लेना~lena|prendre|prendere
+to have|tener|ter|有~yǒu|가지고 있다~gajigo itda|के पास होना~ke paas hona|avoir|avere
+to do|hacer|fazer|做~zuò|하다~hada|करना~karna|faire|fare
+to know|saber|saber|知道~zhīdào|알다~alda|जानना~jaanna|savoir|sapere
+to think|pensar|pensar|想~xiǎng|생각하다~saenggakhada|सोचना~sochna|penser|pensare
+to understand|entender|entender|明白~míngbai|이해하다~ihaehada|समझना~samajhna|comprendre|capire
+to learn|aprender|aprender|学习~xuéxí|배우다~baeuda|सीखना~seekhna|apprendre|imparare
+to teach|enseñar|ensinar|教~jiāo|가르치다~gareuchida|सिखाना~sikhana|enseigner|insegnare
+to work|trabajar|trabalhar|工作~gōngzuò|일하다~ilhada|काम करना~kaam karna|travailler|lavorare
+to play|jugar|jogar|玩~wán|놀다~nolda|खेलना~khelna|jouer|giocare
+to sleep|dormir|dormir|睡觉~shuìjiào|자다~jada|सोना~sona|dormir|dormire
+to wait|esperar|esperar|等~děng|기다리다~gidarida|इंतज़ार करना~intezaar karna|attendre|aspettare
+to help|ayudar|ajudar|帮助~bāngzhù|돕다~dopda|मदद करना~madad karna|aider|aiutare
+to ask|preguntar|perguntar|问~wèn|묻다~mutda|पूछना~poochhna|demander|chiedere
+to answer|responder|responder|回答~huídá|대답하다~daedaphada|जवाब देना~jawaab dena|répondre|rispondere
+to find|encontrar|encontrar|找到~zhǎodào|찾다~chatda|ढूँढना~dhoondhna|trouver|trovare
+to call|llamar|ligar|打电话~dǎ diànhuà|전화하다~jeonhwahada|फ़ोन करना~phone karna|appeler|chiamare
+to live|vivir|morar|住~zhù|살다~salda|रहना~rehna|habiter|abitare
+to like|gustar|gostar|喜欢~xǐhuan|좋아하다~joahada|पसंद करना~pasand karna|aimer|piacere
+to cook|cocinar|cozinhar|做饭~zuòfàn|요리하다~yorihada|पकाना~pakaana|cuisiner|cucinare
+to wash|lavar|lavar|洗~xǐ|씻다~ssitda|धोना~dhona|laver|lavare
+to wear|vestir|vestir|穿~chuān|입다~ipda|पहनना~pahanna|porter|indossare
+to come|venir|vir|来~lái|오다~oda|आना~aana|venir|venire
+to leave|salir|sair|离开~líkāi|떠나다~tteonada|छोड़ना~chhodna|quitter|partire
+to arrive|llegar|chegar|到达~dàodá|도착하다~dochakhada|पहुँचना~pahunchna|arriver|arrivare
+to travel|viajar|viajar|旅行~lǚxíng|여행하다~yeohaenghada|यात्रा करना~yaatra karna|voyager|viaggiare
+to remember|recordar|lembrar|记得~jìde|기억하다~gieokhada|याद रखना~yaad rakhna|se souvenir|ricordare
+to forget|olvidar|esquecer|忘记~wàngjì|잊다~itda|भूलना~bhoolna|oublier|dimenticare
+to choose|elegir|escolher|选择~xuǎnzé|고르다~goreuda|चुनना~chunna|choisir|scegliere
+to start|empezar|começar|开始~kāishǐ|시작하다~sijakhada|शुरू करना~shuru karna|commencer|iniziare
+to finish|terminar|terminar|完成~wánchéng|끝내다~kkeunnaeda|ख़त्म करना~khatm karna|finir|finire
+to pay|pagar|pagar|付款~fùkuǎn|지불하다~jibulhada|भुगतान करना~bhugtaan karna|payer|pagare
+to sing|cantar|cantar|唱歌~chànggē|노래하다~noraehada|गाना~gaana|chanter|cantare
+to dance|bailar|dançar|跳舞~tiàowǔ|춤추다~chumchuda|नाचना~naachna|danser|ballare
+to swim|nadar|nadar|游泳~yóuyǒng|수영하다~suyeonghada|तैरना~tairna|nager|nuotare
+to smile|sonreír|sorrir|微笑~wēixiào|미소 짓다~miso jitda|मुस्कुराना~muskurana|sourire|sorridere
+to wake up|despertarse|acordar|醒来~xǐnglái|일어나다~ireonada|जागना~jaagna|se réveiller|svegliarsi
+to rest|descansar|descansar|休息~xiūxi|쉬다~swida|आराम करना~aaram karna|se reposer|riposare
+brother|hermano|irmão|哥哥~gēge|형~hyeong|भाई~bhai|frère|fratello
+sister|hermana|irmã|姐姐~jiějie|누나~nuna|बहन~bahan|sœur|sorella
+son|hijo|filho|儿子~érzi|아들~adeul|बेटा~beta|fils|figlio
+daughter|hija|filha|女儿~nǚ'ér|딸~ttal|बेटी~beti|fille|figlia
+teacher|maestro|professor|老师~lǎoshī|선생님~seonsaengnim|शिक्षक~shikshak|professeur|insegnante
+student|estudiante|estudante|学生~xuésheng|학생~haksaeng|छात्र~chhaatra|étudiant|studente
+doctor|doctor|médico|医生~yīshēng|의사~uisa|डॉक्टर~doktar|médecin|medico
+city|ciudad|cidade|城市~chéngshì|도시~dosi|शहर~shahar|ville|città
+street|calle|rua|街道~jiēdào|거리~geori|सड़क~sadak|rue|strada
+car|carro|carro|汽车~qìchē|자동차~jadongcha|कार~kaar|voiture|macchina
+bus|autobús|ônibus|公交车~gōngjiāochē|버스~beoseu|बस~bas|bus|autobus
+train|tren|trem|火车~huǒchē|기차~gicha|रेल~rel|train|treno
+airport|aeropuerto|aeroporto|机场~jīchǎng|공항~gonghang|हवाई अड्डा~havaai adda|aéroport|aeroporto
+hotel|hotel|hotel|酒店~jiǔdiàn|호텔~hotel|होटल~hotel|hôtel|albergo
+restaurant|restaurante|restaurante|餐厅~cāntīng|식당~sikdang|रेस्तराँ~restraan|restaurant|ristorante
+money|dinero|dinheiro|钱~qián|돈~don|पैसा~paisa|argent|soldi
+time|tiempo|tempo|时间~shíjiān|시간~sigan|समय~samay|temps|tempo
+week|semana|semana|星期~xīngqī|주~ju|सप्ताह~saptaah|semaine|settimana
+month|mes|mês|月~yuè|월~wol|महीना~mahina|mois|mese
+year|año|ano|年~nián|년~nyeon|साल~saal|an|anno
+evening|tarde|tarde|晚上~wǎnshang|저녁~jeonyeok|शाम~shaam|soir|sera
+hot|caliente|quente|热~rè|뜨겁다~tteugeopda|गरम~garam|chaud|caldo
+cold|frío|frio|冷~lěng|춥다~chupda|ठंडा~thanda|froid|freddo
+new|nuevo|novo|新~xīn|새로운~saeroun|नया~naya|nouveau|nuovo
+old|viejo|velho|旧~jiù|오래된~oraedoen|पुराना~puraana|vieux|vecchio
+beautiful|hermoso|bonito|漂亮~piàoliang|아름답다~areumdapda|सुंदर~sundar|beau|bello
+happy|feliz|feliz|高兴~gāoxìng|행복하다~haengbokhada|खुश~khush|heureux|felice
+sad|triste|triste|难过~nánguò|슬프다~seulpeuda|उदास~udaas|triste|triste
+easy|fácil|fácil|容易~róngyì|쉽다~swipda|आसान~aasaan|facile|facile
+difficult|difícil|difícil|困难~kùnnan|어렵다~eoryeopda|कठिन~kathin|difficile|difficile
+fast|rápido|rápido|快~kuài|빠르다~ppareuda|तेज़~tez|rapide|veloce
+slow|lento|lento|慢~màn|느리다~neurida|धीमा~dheema|lent|lento
+where|dónde|onde|哪里~nǎlǐ|어디~eodi|कहाँ~kahaan|où|dove
+what|qué|o quê|什么~shénme|무엇~mueot|क्या~kya|quoi|che cosa
+who|quién|quem|谁~shéi|누구~nugu|कौन~kaun|qui|chi
+why|por qué|por quê|为什么~wèishénme|왜~wae|क्यों~kyon|pourquoi|perché
+when|cuándo|quando|什么时候~shénme shíhou|언제~eonje|कब~kab|quand|quando
+how|cómo|como|怎么~zěnme|어떻게~eotteoke|कैसे~kaise|comment|come
+with|con|com|跟~gēn|와~wa|के साथ~ke saath|avec|con
+without|sin|sem|没有~méiyǒu|없이~eopsi|बिना~bina|sans|senza
+and|y|e|和~hé|그리고~geurigo|और~aur|et|e
+but|pero|mas|但是~dànshì|하지만~hajiman|लेकिन~lekin|mais|ma
+also|también|também|也~yě|또한~ttohan|भी~bhi|aussi|anche
+very|muy|muito|很~hěn|매우~maeu|बहुत~bahut|très|molto
+always|siempre|sempre|总是~zǒngshì|항상~hangsang|हमेशा~hamesha|toujours|sempre
+never|nunca|nunca|从不~cóngbù|절대~jeoldae|कभी नहीं~kabhi nahin|jamais|mai
+now|ahora|agora|现在~xiànzài|지금~jigeum|अभी~abhi|maintenant|adesso
+here|aquí|aqui|这里~zhèlǐ|여기~yeogi|यहाँ~yahaan|ici|qui
+there|allí|ali|那里~nàlǐ|거기~geogi|वहाँ~wahaan|là|lì
+left|izquierda|esquerda|左边~zuǒbiān|왼쪽~oenjjok|बायाँ~baayaan|gauche|sinistra
+right|derecha|direita|右边~yòubiān|오른쪽~oreunjjok|दायाँ~daayaan|droite|destra
+head|cabeza|cabeça|头~tóu|머리~meori|सिर~sir|tête|testa
+hand|mano|mão|手~shǒu|손~son|हाथ~haath|main|mano
+eye|ojo|olho|眼睛~yǎnjing|눈~nun|आँख~aankh|œil|occhio
+heart|corazón|coração|心~xīn|심장~simjang|दिल~dil|cœur|cuore
+tree|árbol|árvore|树~shù|나무~namu|पेड़~ped|arbre|albero
+flower|flor|flor|花~huā|꽃~kkot|फूल~phool|fleur|fiore
+sea|mar|mar|海~hǎi|바다~bada|समुद्र~samudra|mer|mare
+rain|lluvia|chuva|雨~yǔ|비~bi|बारिश~baarish|pluie|pioggia
+phone|teléfono|telefone|手机~shǒujī|전화기~jeonhwagi|फ़ोन~phone|téléphone|telefono
+computer|computadora|computador|电脑~diànnǎo|컴퓨터~keompyuteo|कंप्यूटर~kampyootar|ordinateur|computer
+music|música|música|音乐~yīnyuè|음악~eumak|संगीत~sangeet|musique|musica
+game|juego|jogo|游戏~yóuxì|게임~geim|खेल~khel|jeu|gioco`;
 const CP=`How are you?|¿Cómo estás?|Como vai você?|你好吗？~nǐ hǎo ma?|잘 지내요?~jal jinaeyo?|आप कैसे हैं?~aap kaise hain?|Comment ça va ?|Come stai?
 I'm fine, thank you.|Estoy bien, gracias.|Estou bem, obrigado.|我很好，谢谢。~wǒ hěn hǎo, xièxie|잘 지내요, 감사합니다.~jal jinaeyo, gamsahamnida|मैं ठीक हूँ, धन्यवाद।~main theek hoon, dhanyavaad|Je vais bien, merci.|Sto bene, grazie.
 What's your name?|¿Cómo te llamas?|Qual é o seu nome?|你叫什么名字？~nǐ jiào shénme míngzi?|이름이 뭐예요?~ireumi mwoyeyo?|आपका नाम क्या है?~aapka naam kya hai?|Comment tu t'appelles ?|Come ti chiami?
@@ -290,56 +414,100 @@ Down the hall, on the left.|Al fondo, a la izquierda.|No fim do corredor, à esq
 I don't understand.|No entiendo.|Não entendo.|我不明白。~wǒ bù míngbai|이해 못 해요.~ihae mot haeyo|मुझे समझ नहीं आया।~mujhe samajh nahin aaya|Je ne comprends pas.|Non capisco.
 I'll say it again, slowly.|Lo diré otra vez, despacio.|Vou repetir devagar.|我慢慢再说一遍。~wǒ mànmàn zài shuō yí biàn|천천히 다시 말할게요.~cheoncheonhi dasi malhalgeyo|मैं धीरे से फिर कहता हूँ।~main dheere se phir kehta hoon|Je répète lentement.|Lo ripeto lentamente.
 Thank you very much.|Muchas gracias.|Muito obrigado.|非常感谢。~fēicháng gǎnxiè|정말 감사합니다.~jeongmal gamsahamnida|बहुत धन्यवाद।~bahut dhanyavaad|Merci beaucoup.|Grazie mille.
-You're welcome.|De nada.|De nada.|不客气。~bú kèqi|천만에요.~cheonmaneyo|कोई बात नहीं।~koi baat nahin|De rien.|Prego.`;
+You're welcome.|De nada.|De nada.|不客气。~bú kèqi|천만에요.~cheonmaneyo|कोई बात नहीं।~koi baat nahin|De rien.|Prego.
+Can you help me?|¿Puedes ayudarme?|Você pode me ajudar?|你能帮我吗？~nǐ néng bāng wǒ ma?|도와주실 수 있어요?~dowajusil su isseoyo?|क्या आप मेरी मदद कर सकते हैं?~kya aap meri madad kar sakte hain?|Pouvez-vous m'aider ?|Può aiutarmi?
+Of course. What do you need?|Claro. ¿Qué necesitas?|Claro. Do que você precisa?|当然。你需要什么？~dāngrán. nǐ xūyào shénme?|물론이죠. 뭐가 필요하세요?~mullonijyo. mwoga piryohaseyo?|ज़रूर। आपको क्या चाहिए?~zaroor. aapko kya chaahiye?|Bien sûr. De quoi avez-vous besoin ?|Certo. Di cosa ha bisogno?
+What time is it?|¿Qué hora es?|Que horas são?|现在几点？~xiànzài jǐ diǎn?|지금 몇 시예요?~jigeum myeot siyeyo?|क्या समय हुआ है?~kya samay hua hai?|Quelle heure est-il ?|Che ore sono?
+It's three o'clock.|Son las tres.|São três horas.|三点。~sān diǎn|세 시예요.~se siyeyo|तीन बजे हैं।~teen baje hain|Il est trois heures.|Sono le tre.
+I'm hungry.|Tengo hambre.|Estou com fome.|我饿了。~wǒ è le|배고파요.~baegopayo|मुझे भूख लगी है।~mujhe bhookh lagi hai|J'ai faim.|Ho fame.
+Let's eat something.|Comamos algo.|Vamos comer algo.|我们吃点东西吧。~wǒmen chī diǎn dōngxi ba|뭔가 먹어요.~mwonga meogeoyo|चलो कुछ खाते हैं।~chalo kuchh khaate hain|Mangeons quelque chose.|Mangiamo qualcosa.
+I would like some water.|Quisiera agua.|Eu gostaria de água.|我想要水。~wǒ xiǎng yào shuǐ|물 좀 주세요.~mul jom juseyo|मुझे पानी चाहिए।~mujhe paani chaahiye|Je voudrais de l'eau.|Vorrei dell'acqua.
+Here you are.|Aquí tiene.|Aqui está.|给你。~gěi nǐ|여기 있어요.~yeogi isseoyo|यह लीजिए।~yah leejiye|Voilà.|Ecco a lei.
+See you tomorrow!|¡Hasta mañana!|Até amanhã!|明天见！~míngtiān jiàn!|내일 봐요!~naeil bwayo!|कल मिलते हैं!~kal milte hain!|À demain !|A domani!
+See you! Take care.|¡Nos vemos! Cuídate.|Até lá! Se cuida.|再见！保重。~zàijiàn! bǎozhòng|또 봐요! 조심히 가세요.~tto bwayo! josimhi gaseyo|मिलते हैं! अपना ध्यान रखना।~milte hain! apna dhyaan rakhna|À bientôt ! Prends soin de toi.|Ci vediamo! Stammi bene.
+Where do you live?|¿Dónde vives?|Onde você mora?|你住在哪里？~nǐ zhù zài nǎlǐ?|어디에 살아요?~eodie sarayo?|आप कहाँ रहते हैं?~aap kahaan rehte hain?|Où habites-tu ?|Dove abiti?
+I live in a small city.|Vivo en una ciudad pequeña.|Moro em uma cidade pequena.|我住在一个小城市。~wǒ zhù zài yí gè xiǎo chéngshì|작은 도시에 살아요.~jageun dosie sarayo|मैं एक छोटे शहर में रहता हूँ।~main ek chhote shahar mein rehta hoon|J'habite dans une petite ville.|Abito in una piccola città.
+What do you like to do?|¿Qué te gusta hacer?|O que você gosta de fazer?|你喜欢做什么？~nǐ xǐhuan zuò shénme?|뭐 하는 걸 좋아해요?~mwo haneun geol joahaeyo?|आपको क्या करना पसंद है?~aapko kya karna pasand hai?|Qu'aimes-tu faire ?|Cosa ti piace fare?
+I like to read and swim.|Me gusta leer y nadar.|Gosto de ler e nadar.|我喜欢读书和游泳。~wǒ xǐhuan dúshū hé yóuyǒng|책 읽기와 수영을 좋아해요.~chaek ikgiwa suyeongeul joahaeyo|मुझे पढ़ना और तैरना पसंद है।~mujhe padhna aur tairna pasand hai|J'aime lire et nager.|Mi piace leggere e nuotare.
+Can I have the bill, please?|La cuenta, por favor.|A conta, por favor.|请买单。~qǐng mǎidān|계산서 주세요.~gyesanseo juseyo|बिल दीजिए, कृपया।~bil deejiye, kripaya|L'addition, s'il vous plaît.|Il conto, per favore.
+Of course. Cash or card?|Claro. ¿Efectivo o tarjeta?|Claro. Dinheiro ou cartão?|好的。现金还是刷卡？~hǎo de. xiànjīn háishi shuākǎ?|네. 현금이세요, 카드세요?~ne. hyeongeumiseyo, kadeuseyo?|ज़रूर। नकद या कार्ड?~zaroor. nakad ya kaard?|Bien sûr. Espèces ou carte ?|Certo. Contanti o carta?
+I'm sorry, I'm late.|Perdón, llego tarde.|Desculpe, estou atrasado.|对不起，我迟到了。~duìbuqǐ, wǒ chídào le|죄송해요, 늦었어요.~joesonghaeyo, neujeosseoyo|माफ़ कीजिए, मुझे देर हो गई।~maaf kijiye, mujhe der ho gayi|Désolé, je suis en retard.|Scusa, sono in ritardo.
+No problem. Come in.|No hay problema. Pasa.|Sem problema. Entre.|没关系。请进。~méiguānxi. qǐng jìn|괜찮아요. 들어오세요.~gwaenchanayo. deureooseyo|कोई बात नहीं। अंदर आइए।~koi baat nahin. andar aaiye|Pas de problème. Entrez.|Nessun problema. Entra.
+Do you like this city?|¿Te gusta esta ciudad?|Você gosta desta cidade?|你喜欢这个城市吗？~nǐ xǐhuan zhège chéngshì ma?|이 도시가 마음에 들어요?~i dosiga maeume deureoyo?|क्या आपको यह शहर पसंद है?~kya aapko yah shahar pasand hai?|Tu aimes cette ville ?|Ti piace questa città?
+Yes, it's beautiful.|Sí, es hermosa.|Sim, é linda.|是的，很漂亮。~shì de, hěn piàoliang|네, 아름다워요.~ne, areumdawoyo|हाँ, यह सुंदर है।~haan, yah sundar hai|Oui, elle est belle.|Sì, è bella.`;
 const LOGO=`<svg viewBox="0 0 100 100"><rect width="100" height="100" rx="24" fill="#2563eb"/><polygon points="22,42 26,10 48,28" fill="#8e98a5"/><polygon points="78,42 74,10 52,28" fill="#8e98a5"/><polygon points="28,34 30,19 41,28" fill="#f9a8d4"/><polygon points="72,34 70,19 59,28" fill="#f9a8d4"/><circle cx="50" cy="58" r="31" fill="#a3acb8"/><path d="M50 29v9M41 31l2 8M59 31l-2 8M20 54h9M21 63h9M80 54h-9M79 63h-9" stroke="#59616e" stroke-width="4" stroke-linecap="round" fill="none"/><ellipse cx="50" cy="68" rx="15" ry="11" fill="#fff"/><circle cx="38" cy="53" r="5" fill="#1d2433"/><circle cx="62" cy="53" r="5" fill="#1d2433"/><circle cx="39.8" cy="51.2" r="1.7" fill="#fff"/><circle cx="63.8" cy="51.2" r="1.7" fill="#fff"/><path d="M46 62h8l-4 5z" fill="#f472b6"/><path d="M50 67v3M50 70q-4 4-8 1M50 70q4 4 8 1" stroke="#59616e" stroke-width="2" stroke-linecap="round" fill="none"/></svg>`;
 let s={xp:0,streak:0,last:"",known:{},nl:null,tl:null},tab="w",cat=-1,Q=null,sN=null,sL=null,cats,allW,P,legacy;
 try{const x=localStorage.getItem("spk");if(x)s=Object.assign(s,JSON.parse(x))}catch(e){}
-const sh=a=>[...a].sort(()=>Math.random()-.5),$=id=>document.getElementById(id),t=i=>(i>17?UY:i>14?UX:UI)[s.nl==null?0:s.nl][i>17?i-18:i>14?i-15:i],D=x=>x.replace("~"," · "),save=()=>{try{localStorage.setItem("spk",JSON.stringify(s))}catch(e){}};
+const sh=a=>[...a].sort(()=>Math.random()-.5),$=id=>document.getElementById(id),t=i=>(i>20?UZ:i>17?UY:i>14?UX:UI)[s.nl==null?0:s.nl][i>20?i-21:i>17?i-18:i>14?i-15:i],D=x=>x.replace("~"," · "),save=()=>{try{localStorage.setItem("spk",JSON.stringify(s))}catch(e){}};
 function loadPack(){legacy=s.nl==1&&s.tl==0;
-if(legacy){cats=(WD+"\n"+WD2).split("\n").map(l=>{const[n,r]=l.split("|");return{n,w:r.split(",").map(x=>x.split("="))}});P=(PH+"\n"+PH2).split("\n").map(l=>l.split("|"))}
+if(legacy){cats=(WD+"\n"+WD2+"\n"+WD3).split("\n").map(l=>{const[n,r]=l.split("|");return{n,w:r.split(",").map(x=>x.split("="))}});P=(PH+"\n"+PH2).split("\n").map(l=>l.split("|"))}
 else{const f=CW.split("\n").map(r=>r.split("|")),g=CP.split("\n").map(r=>r.split("|"));cats=[{n:"★",w:f.map(r=>[r[s.tl],r[s.nl]])}];P=[];for(let i=0;i<g.length;i+=2)P.push([g[i][s.tl],g[i][s.nl],g[i+1][s.tl],g[i+1][s.nl]])}
 allW=cats.flatMap(c=>c.w)}
 const K=w=>(legacy?"":s.tl+":")+w[0],mastered=()=>allW.filter(w=>(s.known[K(w)]||0)>=3).length;
 function webSay(x,l){try{const u=new SpeechSynthesisUtterance(x);u.lang=l;u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
-function say(x){x=x.split("~")[0];const l=TT[s.tl==null?0:s.tl],T=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.TextToSpeech;if(!T)return webSay(x,l);
+function say(x){x=x.split("~")[0];speakM(x.length);const l=TT[s.tl==null?0:s.tl],T=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.TextToSpeech;if(!T)return webSay(x,l);
 Promise.resolve().then(()=>T.stop()).catch(()=>{}).then(()=>T.speak({text:x,lang:l,rate:.9,pitch:1,volume:1})).catch(()=>T.speak({text:x,lang:l.slice(0,2),rate:.9,pitch:1,volume:1})).catch(()=>webSay(x,l))}
 let HAS3=false,R3,sc,cam,M3={},mS="";const RM=!!(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches);
+function speakM(n){M3.sp=performance.now()/1000+Math.min(4,.3+n*.07)}
 function init3(){try{if(!window.THREE)return;const T=THREE;R3=new T.WebGLRenderer({alpha:true,antialias:true});R3.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
-sc=new T.Scene();cam=new T.PerspectiveCamera(30,.8,.1,50);cam.position.set(0,2,9);cam.lookAt(0,1.85,0);
-sc.add(new T.HemisphereLight(0xffffff,0x8899bb,.95));const L=new T.DirectionalLight(0xffffff,.85);L.position.set(2,5,4);sc.add(L);
-const mt=(c,r)=>new T.MeshStandardMaterial({color:c,roughness:r||.65}),G=mt(0xa3acb8),Dk=mt(0x59616e),W=mt(0xf4f6fa,.5),Pk=mt(0xf9a8d4),Ns=mt(0xf472b6),Ey=mt(0x1d2433,.3);
-const sp=(r,m,x,y,z,sx,sy,sz)=>{const o=new T.Mesh(new T.SphereGeometry(r,20,14),m);o.position.set(x,y,z);o.scale.set(sx||1,sy||1,sz||1);return o};
-const root=new T.Group(),body=sp(1,G,0,1.05,0,.85,.95,.75);root.add(body);root.add(sp(1,W,0,.98,.42,.55,.7,.4));
-const head=new T.Group();head.position.set(0,1.95,0);root.add(head);head.add(sp(1,G,0,.55,0,1.1,1,1));
-for(const k of[-1,1]){const e=new T.Mesh(new T.ConeGeometry(.4,.7,12),G);e.position.set(k*.7,1.4,0);e.rotation.z=-k*.35;head.add(e);
-const i=new T.Mesh(new T.ConeGeometry(.24,.5,12),Pk);i.position.set(k*.7,1.35,.12);i.rotation.z=-k*.35;head.add(i)}
-const eyes=[];for(const k of[-1,1]){const e=sp(.14,Ey,k*.4,.62,.9,1,1.3,.6);head.add(e);head.add(sp(.045,W,k*.37,.7,.98));eyes.push(e)}
-head.add(sp(.42,W,0,.22,.78,1.15,.8,.7));head.add(sp(.09,Ns,0,.33,1.06,1.3,.9,.8));
-for(const k of[-1,1]){const m=new T.Mesh(new T.TorusGeometry(.11,.017,6,12,Math.PI),Dk);m.position.set(k*.1,.22,1.05);m.rotation.z=Math.PI;head.add(m);
-for(const j of[-1,1]){const w=new T.Mesh(new T.CylinderGeometry(.008,.008,.7,4),Dk);w.position.set(k*.85,.2+j*.09,.78);w.rotation.set(0,-k*.5,Math.PI/2+j*k*.12);head.add(w)}
-for(const y of[.5,.36]){const s=new T.Mesh(new T.BoxGeometry(.3,.06,.05),Dk);s.position.set(k*.93,y,.4);s.rotation.y=k*1.1;head.add(s)}}
-for(const x of[-.2,0,.2]){const s=new T.Mesh(new T.BoxGeometry(.07,.3-Math.abs(x),.05),Dk);s.position.set(x,1.02-Math.abs(x)*.3,.85-Math.abs(x)*.4);s.rotation.x=-.55;head.add(s)}
-const arms=[-1,1].map(k=>{const g=new T.Group();g.position.set(k*.8,1.6,.05);const c=new T.Mesh(new T.CapsuleGeometry(.2,.5,6,12),G);c.position.y=-.4;g.add(c);g.add(sp(.25,W,0,-.85,0));root.add(g);return g});
-const feet=[-1,1].map(k=>{const f=sp(.32,W,k*.42,.2,.25,1,.6,1.4);root.add(f);return f});
-const tail=[];for(let i=0;i<7;i++){const s=sp(.19-i*.012,i>4?Dk:G,0,0,0);root.add(s);tail.push(s)}
+sc=new T.Scene();cam=new T.PerspectiveCamera(28,.8,.1,60);cam.position.set(0,2.1,11);cam.lookAt(0,2,0);
+sc.add(new T.HemisphereLight(0xffffff,0x9aa8c8,.8));const L=new T.DirectionalLight(0xffffff,.9);L.position.set(2.5,5,5);sc.add(L);const L2=new T.DirectionalLight(0x9fc8ff,.55);L2.position.set(-4,3,-4);sc.add(L2);
+let gm=null;try{gm=new T.DataTexture(new Uint8Array([80,160,255]),3,1,T.RedFormat);gm.minFilter=gm.magFilter=T.NearestFilter;gm.needsUpdate=true}catch(e){gm=null}
+const mt=c=>{const o={color:c};if(gm)o.gradientMap=gm;return new T.MeshToonMaterial(o)},OL=new T.MeshBasicMaterial({color:0x2b2f3a,side:T.BackSide}),
+G=mt(0xaab3bf),Dk=mt(0x4d5563),W=mt(0xfbfcff),Pk=mt(0xffb3cf),Ns=mt(0xf0658f),Ey=mt(0x1b2030),Mo=mt(0x7a2338),Lm=mt(0x1b2030);Mo.side=T.DoubleSide;Lm.side=T.DoubleSide;
+const ol=(m,s)=>{const b=new T.Mesh(m.geometry,OL);b.scale.setScalar(s||1.08);m.add(b);return m};
+const sp=(r,m,x,y,z,sx,sy,sz,o)=>{const e=new T.Mesh(new T.SphereGeometry(r,24,18),m);e.position.set(x,y,z);e.scale.set(sx||1,sy||1,sz||1);return o?ol(e,1.07):e};
+const root=new T.Group(),body=sp(1,G,0,1,0,.82,.88,.74,1);root.add(body);root.add(sp(1,W,0,.92,.4,.52,.66,.38));
+for(const k of[-1,1])for(const y of[.9,1.2]){const b=new T.Mesh(new T.BoxGeometry(.3,.06,.05),Dk);b.position.set(k*.74,y,.18);b.rotation.y=k*.9;root.add(b)}
+const head=new T.Group();head.position.set(0,1.9,0);root.add(head);head.add(sp(1,G,0,.62,0,1.18,1.02,1.02,1));
+const ear=[-1,1].map(k=>{const g=new T.Group();g.position.set(k*.78,1.3,-.02);const e=ol(new T.Mesh(new T.ConeGeometry(.42,.78,16),G),1.1);e.position.y=.34;const i=new T.Mesh(new T.ConeGeometry(.26,.55,16),Pk);i.position.set(0,.3,.14);g.add(e);g.add(i);head.add(g);return g});
+const eyeG=[],pup=[];for(const k of[-1,1]){const g=new T.Group();g.position.set(k*.46,.7,.88);g.add(sp(.3,W,0,0,0,1,1.15,.55,1));const p=new T.Group();p.position.z=.1;p.add(sp(.17,Ey,0,0,0,1,1.2,.5));p.add(sp(.06,W,.06,.08,.1));g.add(p);head.add(g);eyeG.push(g);pup.push(p)}
+const brow=[-1,1].map(k=>{const g=new T.Group();g.position.set(k*.46,1.08,.86);g.add(new T.Mesh(new T.BoxGeometry(.34,.075,.06),Dk));head.add(g);return g});
+head.add(sp(.44,W,0,.2,.8,1.2,.8,.7,1));head.add(sp(.1,Ns,0,.34,1.08,1.3,.9,.8));
+const mouth=sp(.2,Mo,0,.06,1.0,1.2,.01,.5);mouth.add(sp(.12,Pk,0,-.35,.35,1,.6,.5));head.add(mouth);
+const sm=[-1,1].map(k=>{const m=new T.Mesh(new T.TorusGeometry(.12,.02,6,14,Math.PI),Lm);m.position.set(k*.12,.15,1.07);m.rotation.z=Math.PI;head.add(m);return m});
+for(const k of[-1,1]){head.add(sp(.14,Pk,k*.72,.3,.78,1,.6,.3));
+for(const j of[-1,0,1]){const w=new T.Mesh(new T.CylinderGeometry(.008,.008,.8,4),Dk);w.position.set(k*.95,.22+j*.1,.75);w.rotation.set(0,-k*.35,Math.PI/2+k*j*.18);head.add(w)}
+for(const y of[.5,.36]){const s=new T.Mesh(new T.BoxGeometry(.3,.06,.05),Dk);s.position.set(k*.98,y,.4);s.rotation.y=k*1.1;head.add(s)}}
+for(const x of[-.22,0,.22]){const s=new T.Mesh(new T.BoxGeometry(.07,.3-Math.abs(x),.05),Dk);s.position.set(x,1.12-Math.abs(x)*.3,.85-Math.abs(x)*.4);s.rotation.x=-.55;head.add(s)}
+const arm=[-1,1].map(k=>{const sh=new T.Group();sh.position.set(k*.78,1.5,.08);const u=ol(new T.Mesh(new T.CapsuleGeometry(.17,.35,6,12),G),1.12);u.position.y=-.3;sh.add(u);
+const el=new T.Group();el.position.y=-.6;sh.add(el);const f=ol(new T.Mesh(new T.CapsuleGeometry(.155,.25,6,12),G),1.12);f.position.y=-.2;el.add(f);const pw=sp(.23,W,0,-.45,0,1,1,1,1);el.add(pw);pw.add(sp(.09,Pk,0,-.02,.16,1.2,.8,.5));root.add(sh);return{sh,el}});
+const feet=[-1,1].map(k=>{const f=sp(.34,W,k*.44,.2,.28,1,.6,1.35,1);root.add(f);return f});
+const tail=[];for(let i=0;i<8;i++){const s=sp(.2-i*.012,i%2?Dk:G,0,0,0,1,1,1,1);root.add(s);tail.push(s)}
 const sh=new T.Mesh(new T.CircleGeometry(1,24),new T.MeshBasicMaterial({color:0,transparent:true,opacity:.2}));sh.rotation.x=-Math.PI/2;sh.position.y=.02;sc.add(sh);sc.add(root);
-const C={ry:0,y:0,hx:0,hy:0,hz:0,al:.1,ar:.1,bz:0,ta:.35,sq:1,tl:0,tf:2.5};
-M3.upd=function(t){const ts=t-M3.t0,dt=Math.min(.05,Math.max(0,t-(M3.l||t)));M3.l=t;let s=mS;if((s=="hi"&&ts>3.2)||(s=="cheer"&&ts>1.8)||(s=="sad"&&ts>2.6))s="";
-const P={ry:Math.sin(t*.7)*.35,y:Math.sin(t*2)*.02,hx:0,hy:Math.sin(t*.8)*.25,hz:Math.sin(t*1.1)*.05,al:.12+Math.sin(t*2)*.04,ar:.12+Math.sin(t*2+1)*.04,bz:0,ta:.35,sq:1,tl:0,tf:2.5};
-if(s=="hi"){P.ry=0;P.hy=0;P.ar=2.7+Math.sin(ts*9)*.35}
-if(s=="cheer"){P.ry=0;P.y=Math.abs(Math.sin(ts*5.5))*.7;P.al=P.ar=2.9+Math.sin(ts*14)*.15;P.hx=-.15;P.ta=.7;P.tf=7}
-if(s=="sad"){P.ry=0;P.hx=.5;P.hy=0;P.hz=.15;P.al=P.ar=.04;P.y=-.04;P.ta=.08;P.sq=.55;P.tl=1}
-if(s=="dance"){P.ry=Math.sin(ts*3)*.7;P.y=Math.abs(Math.sin(ts*3))*.3;P.bz=Math.sin(ts*3)*.15;P.al=1.8+Math.sin(ts*6)*1.1;P.ar=1.8-Math.sin(ts*6)*1.1;P.hz=Math.sin(ts*6)*.25;P.hy=0;P.ta=.6;P.tf=6}
-for(const k in C)C[k]+=(P[k]-C[k])*.18;M3.ph=(M3.ph||0)+dt*C.tf;
-const bl=(t%3.7)<.12?.1:1;root.rotation.y=C.ry;root.rotation.z=C.bz;root.position.y=C.y;body.scale.y=.95*(1+Math.sin(t*2)*.015);
-head.rotation.set(C.hx,C.hy,C.hz);arms[0].rotation.z=-C.al;arms[1].rotation.z=C.ar;eyes.forEach(e=>{e.scale.y=1.3*C.sq*bl});
-const d=s=="dance";feet[0].position.y=.2+(d?Math.max(0,Math.sin(ts*6))*.25:0);feet[1].position.y=.2+(d?Math.max(0,-Math.sin(ts*6))*.25:0);
-tail.forEach((m,i)=>{const u=i/6;m.position.set(Math.sin(M3.ph-i*.7)*C.ta*u*1.4,.6+(1-C.tl)*i*.2-C.tl*i*.1,-.65-i*.1)});
-const k=1-C.y*.25;sh.scale.set(1.3*k,k,1);sh.material.opacity=.2-C.y*.1};
+const J={};M3.J=J;const g=(k,v,st,dp)=>{const j=J[k]||(J[k]={x:v,v:0});j.v=(j.v+(v-j.x)*(st||.14))*(dp||.74);j.x+=j.v;return j.x};
+M3.upd=function(t){const ts=t-M3.t0,dt=Math.min(.05,Math.max(0,t-(M3.l||t)));M3.l=t;let s=mS;
+if((s=="hi"&&ts>3.4)||(s=="cheer"&&ts>2.1)||(s=="sad"&&ts>2.8))s="";
+const px=Math.max(-1,Math.min(1,M3.px||0)),py=Math.max(-1,Math.min(1,M3.py||0));
+if(!s&&t>(M3.nx||0)){M3.nx=t+3.5+Math.random()*3;M3.ia=Math.floor(Math.random()*4);M3.it=t}
+const iu=t-(M3.it||-9),ia=(!s&&iu<1.2)?M3.ia:-1;
+const P={ry:Math.sin(t*.6)*.3,y:0,sx:1,sy:1,hx:-py*.1,hy:px*.4+Math.sin(t*.8)*.1,hz:Math.sin(t*1.1)*.04,al:.12,ar:.12,el:.1,er:.1,bz:0,ta:.25,tl:0,tf:2.2,eh:1,ey:py,bro:0,sm:1,mo:0,ear:0};
+if(ia==0)P.hy+=Math.sin(iu*5)*.5;if(ia==1){P.hz=.28;P.ear=.4*Math.sin(iu*14)}if(ia==2){P.al=P.ar=1.1;P.hx=-.18;P.sy=1.04}if(ia==3){P.tf=6;P.ta=.5;P.bro=.6}
+if(s=="hi"){P.ry=0;P.hy=px*.3;P.ar=2.5;P.er=Math.sin(ts*9)*.7;P.bro=.5;P.mo=.3}
+if(s=="cheer"){const u=(ts%.72)/.72;P.ry=0;P.y=Math.max(0,Math.sin(u*Math.PI))*.9;P.sy=u<.12||u>.9?.86:1.1;P.sx=1/Math.sqrt(P.sy);P.al=P.ar=2.8+Math.sin(ts*16)*.2;P.el=P.er=.15;P.eh=.25;P.mo=1;P.bro=.8;P.hx=-.2;P.ta=.7;P.tf=8;P.ear=.4}
+if(s=="sad"){P.ry=0;P.hx=.55;P.hy=0;P.hz=.12;P.al=P.ar=.04;P.y=-.06;P.sy=.95;P.ta=.05;P.tl=1;P.eh=.6;P.ey=-.7;P.bro=-1;P.sm=-1;P.ear=-.7}
+if(s=="dance"){const b=ts*Math.PI*2;P.ry=Math.sin(b/2)*.8;P.y=Math.abs(Math.sin(b))*.35;P.bz=Math.sin(b/2)*.18;P.al=1.9+Math.sin(b);P.ar=1.9-Math.sin(b);P.el=P.er=.4+Math.sin(b)*.4;P.hz=Math.sin(b)*.25;P.hx=Math.abs(Math.sin(b))*.1;P.eh=.8;P.mo=.6;P.bro=.5;P.ta=.8;P.tf=8;P.ear=Math.sin(b*2)*.3;P.sy=1+Math.cos(b*2)*.06}
+if(M3.sp&&t<M3.sp)P.mo=Math.max(P.mo,.25+.35*Math.abs(Math.sin(t*14)));
+const bl=((t+1.3)%3.9)<.13?.12:1,pop=g("pop",1,.1,.7);
+root.rotation.y=g("ry",P.ry,.1,.8);root.rotation.z=g("bz",P.bz,.12,.75);root.position.y=P.y;
+const sx=g("sx",P.sx,.2,.65),sy=g("sy",P.sy,.2,.65);root.scale.set(sx*pop,sy*pop,sx*pop);
+body.scale.y=.88*(1+Math.sin(t*2)*.018);head.position.y=1.9+Math.sin(t*2+.5)*.015;
+head.rotation.set(g("hx",P.hx,.12,.7),g("hy",P.hy,.1,.75),g("hz",P.hz,.12,.7));
+arm[0].sh.rotation.z=-g("al",P.al,.14,.7);arm[1].sh.rotation.z=g("ar",P.ar,.14,.7);arm[0].el.rotation.z=-g("el",P.el,.18,.6);arm[1].el.rotation.z=g("er",P.er,.18,.6);
+const ea=g("ear",P.ear,.2,.6);ear[0].rotation.z=.35+ea;ear[1].rotation.z=-.35-ea;
+const eh=Math.max(.08,g("eh",P.eh,.25,.6)*bl),ex=g("ex",px,.15,.7),ey=g("ey",P.ey,.15,.7);eyeG.forEach(e=>{e.scale.y=eh});pup.forEach(p=>p.position.set(ex*.09,ey*.09,.1));
+const br=g("bro",P.bro,.2,.7);brow.forEach((b,i)=>{b.position.y=1.08+br*.1;b.rotation.z=(i?1:-1)*br*.35});
+const mo=g("mo",P.mo,.25,.6),sv=g("sm",P.sm,.2,.7);mouth.scale.set(1.2,Math.max(.01,mo)*.55,.5);sm.forEach(m=>{m.scale.y=sv;m.visible=mo<.4});
+const ta=g("ta",P.ta,.1,.8),tl=g("tl",P.tl,.08,.8),tf=g("tf",P.tf,.08,.85);M3.ph=(M3.ph||0)+dt*tf;let x=0,y=.62;
+tail.forEach((m,i)=>{const a=tl*(1.3+i*.1)+.12*i+Math.sin(M3.ph-i*.55)*ta*(.25+i*.12);x+=Math.sin(a)*.24;y+=Math.cos(a)*.24;m.position.set(x,y,-.6-i*.06)});
+const d=s=="dance",fs=Math.sin(ts*Math.PI*2);feet[0].position.y=.2+(d?Math.max(0,fs)*.2:0);feet[1].position.y=.2+(d?Math.max(0,-fs)*.2:0);
+const k=1-P.y*.25;sh.scale.set(1.35*k*pop,k*pop,1);sh.material.opacity=.2-P.y*.1};
 (function loop(){requestAnimationFrame(loop);if(M3.host&&M3.host.isConnected){M3.upd(RM?0:performance.now()/1000);R3.render(sc,cam)}})();
+if(window.addEventListener)window.addEventListener("pointermove",e=>{M3.px=(e.clientX/innerWidth-.5)*2;M3.py=-(e.clientY/innerHeight-.5)*2});
 HAS3=true}catch(e){HAS3=false}}
 function attach(){if(!HAS3)return;const h=document.querySelector(".m3");if(!h){M3.host=null;return}
-if(R3.domElement.parentNode!==h)h.appendChild(R3.domElement);M3.host=h;mS=(h.dataset&&h.dataset.s)||"";M3.t0=performance.now()/1000;
+if(R3.domElement.parentNode!==h)h.appendChild(R3.domElement);M3.host=h;mS=(h.dataset&&h.dataset.s)||"";M3.t0=performance.now()/1000;if(M3.J)M3.J.pop={x:.05,v:0};
+R3.domElement.onpointerdown=()=>{if(mS!="dance"){mS=Math.random()<.5?"cheer":"hi";M3.t0=performance.now()/1000;speakM(6)}};
 const w=h.clientWidth||100,hh=h.clientHeight||130;R3.setSize(w,hh,false);cam.aspect=w/hh;cam.updateProjectionMatrix()}
 function react(g){mS=g?"cheer":"sad";M3.t0=performance.now()/1000;const mm=document.querySelector(".mas");if(mm)mm.setAttribute("class","mas "+mS)}
 init3();
@@ -352,6 +520,19 @@ const vc=()=>NT()&&s.tl>1?`<div class="card mu">${t(15)}<button class="btn" oncl
 function instV(){Promise.resolve().then(()=>NT().openInstall()).catch(()=>alert(t(17)))}
 function boom(n){const C=["#2563eb","#06b6d4","#38bdf8","#f59e0b","#ec4899","#10b981"];for(let i=0;i<n;i++){const e=document.createElement("i");e.className="cf";e.style.cssText=`left:50%;top:45%;background:${R(C)};--x:${(Math.random()-.5)*360}px;--y:${-60-Math.random()*260}px;--r:${Math.random()*720}deg`;document.body.appendChild(e);setTimeout(()=>e.remove(),1000)}}
 function xpUp(){const e=document.createElement("div");e.className="xp";e.textContent="+10 XP";document.body.appendChild(e);setTimeout(()=>e.remove(),900)}
+const LAT=[0,1,2,6,7],nm=x=>x.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^\p{L}\p{N} ]/gu,"").replace(/\s+/g," ").trim();
+const ordC=()=>s.tl==3?[]:P.flatMap(p=>[[p[0],p[1]],[p[2],p[3]]]).filter(c=>c[0].split("~")[0].trim().split(" ").length>=3);
+const qT=w=>{const l=Math.random()<.5;return{typ:"t",pr:l?"…":w[1],sub:l?t(22):t(23),an:w[0],sp:w[0],say:w[0],auto:l,info:w[0]+" = "+w[1],k:K(w)}};
+const qO=c=>{const b=c[0].split("~")[0].trim();return{typ:"o",pr:c[1],sub:t(24),tk:sh(b.split(" ")),an:c[0],base:b,sp:c[0],say:c[0],info:c[0]+" = "+c[1],k:"o"+c[0],ng:1}};
+const xb=()=>(LAT.includes(s.tl)?`<button class="btn" onclick="startT()">${t(25)}</button>`:"")+(ordC().length?`<button class="btn" onclick="startO()">${t(26)}</button>`:"")+`<button class="btn" onclick="startX()">${t(27)}</button>`;
+const uiX=q=>q.typ=="t"?`<input id="in" class="inp" autocapitalize="none" autocomplete="off" autocorrect="off" spellcheck="false" onkeydown="if(event.key=='Enter')chk()"><button class="btn" onclick="chk()">${t(21)}</button>`:`<div id="ans" class="chips ans"></div><div id="bank" class="chips">${q.tk.map((w,i)=>`<button class="chip on" id="k${i}" onclick="tk(${i})">${w}</button>`).join("")}</div><button class="btn" onclick="chk()">${t(21)}</button>`;
+function tk(i){const b=$("k"+i),a=$("ans");(b.parentNode==a?$("bank"):a).appendChild(b)}
+function chk(){const q=Q.q[Q.i];if(Q.dn===Q.i)return;Q.dn=Q.i;let v;if(q.typ=="t"){v=$("in").value;$("in").disabled=true}else{v=[...$("ans").children].map(b=>b.textContent).join(" ");document.querySelectorAll("#bank button,#ans button").forEach(b=>{b.disabled=true})}done(nm(v)==nm(q.base||q.an))}
+function startT(){Q={i:0,ok:0,q:sh(allW).slice(0,10).map(qT)};draw()}
+function startO(){Q={i:0,ok:0,q:sh(ordC()).slice(0,10).map(qO)};draw()}
+function startX(){const d0=draw;draw=()=>{};startW();const a=Q.q;startP();const b=Q.q;draw=d0;
+const m=[...a.slice(0,4),...b.slice(0,3)];if(LAT.includes(s.tl))m.push(...sh(allW).slice(0,2).map(qT));if(ordC().length)m.push(...sh(ordC()).slice(0,2).map(qO));
+Q={i:0,ok:0,q:sh(m).slice(0,10)};draw()}
 function go(x){tab=x;Q=null;draw()}
 function fin(){s.nl=sN;s.tl=sL;save();loadPack();tab="w";draw()}
 function setup(a){const n=sN==null?0:sN,u=UI[n];
@@ -360,8 +541,8 @@ function draw(){draw0();attach()}
 function draw0(){const a=$("app");$("nav").innerHTML="";
 if(tab=="s"||s.nl==null||s.tl==null)return setup(a);
 nav();if(Q)return quiz(a);
-if(tab=="w"){a.innerHTML=hdr()+hm()+vc()+(cats.length>1?`<div class="card"><div class="chips"><button class="chip ${cat<0?"on":""}" onclick="cat=-1;draw()">★</button>${cats.map((c,i)=>`<button class="chip ${cat==i?"on":""}" onclick="cat=${i};draw()">${c.n}</button>`).join("")}</div></div>`:"")+`<button class="btn" onclick="startW()">${t(4)}</button>`}
-else if(tab=="p"){a.innerHTML=hdr()+hm()+vc()+`<button class="btn" onclick="startP()">${t(5)} (${P.length})</button>`}
+if(tab=="w"){a.innerHTML=hdr()+hm()+vc()+(cats.length>1?`<div class="card"><div class="chips"><button class="chip ${cat<0?"on":""}" onclick="cat=-1;draw()">★</button>${cats.map((c,i)=>`<button class="chip ${cat==i?"on":""}" onclick="cat=${i};draw()">${c.n}</button>`).join("")}</div></div>`:"")+`<button class="btn" onclick="startW()">${t(4)}</button>`+xb()}
+else if(tab=="p"){a.innerHTML=hdr()+hm()+vc()+`<button class="btn" onclick="startP()">${t(5)} (${P.length})</button>`+xb()}
 else if(tab=="r"){a.innerHTML=hdr()+`<div class="card"><b>Gramática básica</b><p class="mu">• <b>To be:</b> I am · he/she/it is · you/we/they are<br>• <b>Do/Does:</b> does con he/she/it, do con los demás; luego el verbo sin -s<br>• <b>Have/Has:</b> has con he/she/it<br>• <b>There is/are:</b> is = uno · are = varios</p></div><button class="btn" onclick="startG()">Practicar 10 ejercicios</button>`}
 else if(tab=="n"){a.innerHTML=hdr()+`<div class="card"><b>Elige un nivel</b><div class="chips" style="margin-top:10px">${LV.map((l,i)=>`<button class="chip ${lv==i?"on":""}" onclick="lv=${i};draw()">${l[0]}–${l[1]}</button>`).join("")}</div></div><div class="card mu">💡 Ojo: <b>thirteen</b> (13) acentúa el final y <b>thirty</b> (30) el inicio.</div><button class="btn" onclick="startN()">Practicar 10 números</button>`}
 else if(tab=="l"){a.innerHTML=hdr()+`<div class="card"><b>${t(1)}</b>${P.map((p,i)=>`<div class="row"><div><div>${D(p[0])}</div><div class="mu">${D(p[1])}</div><div style="color:var(--ac)">↳ ${D(p[2])}</div><div class="mu">${D(p[3])}</div></div><button class="sp" onclick="say(P[${i}][0]+'. '+P[${i}][2])">🔊</button></div>`).join("")}</div><div class="card"><b>${t(0)}</b>${cats.map(c=>(cats.length>1?`<p style="margin:12px 0 4px"><b>${c.n}</b></p>`:"")+c.w.map(w=>`<div class="row"><span>${D(w[0])} <span class="mu">– ${D(w[1])}</span></span><button class="sp" onclick="say(allW[${allW.indexOf(w)}][0])">🔊</button></div>`).join("")).join("")}</div>`}
@@ -372,10 +553,11 @@ Q={i:0,ok:0,q:it.map(w=>{const d=Math.random()<.5,o=sh(allW.filter(x=>x!=w&&x[d?
 function startP(){Q={i:0,ok:0,q:sh(P).slice(0,10).map(p=>{const o=sh([p,...sh(P.filter(x=>x!=p)).slice(0,2)]);return{pr:p[0],sub:p[1],op:o.map(x=>x[2]),opS:o.map(x=>x[2]),opT:o.map(x=>x[3]),an:p[2],k:K(p),sp:p[0],say:p[2],auto:1,info:p[3]}})};draw()}
 function quiz(a){if(Q.i>=Q.q.length){const d=new Date().toDateString();if(s.last!=d){const y=new Date(Date.now()-864e5).toDateString();s.streak=s.last==y?s.streak+1:1;s.last=d}save();
 const w=Q.ok>=7;a.innerHTML=hdr()+`<div class="card" style="text-align:center"><div class="hero2">${mas(w?"dance":"hi")}</div><div class="big">${Q.ok} / ${Q.q.length}</div><p class="mu">${w?t(10):t(10).replace("🎉","💪")}</p></div><button class="btn" onclick="go(tab)">${t(7)}</button>`;if(w)boom(80);Q=null;return}
-const q=Q.q[Q.i];a.innerHTML=`<div class="bar"><i style="width:${Q.i/Q.q.length*100}%"></i></div><div class="card" style="margin-top:16px"><div class="mq">${mas("")}</div><div class="mu">${Q.i+1}/${Q.q.length}</div><div class="big">${D(q.pr)} <button class="sp" onclick="say(Q.q[Q.i].sp)">🔊</button></div><div class="mu">${D(q.sub)}</div></div><div id="o">${q.op.map((o,i)=>`<button class="opt" onclick="pick(${i})">${D(o)}${q.opT?`<div class="mu">${D(q.opT[i])}</div>`:""}</button>`).join("")}</div><div id="f"></div>`;if(q.auto)say(q.sp)}
+const q=Q.q[Q.i];a.innerHTML=`<div class="bar"><i style="width:${Q.i/Q.q.length*100}%"></i></div><div class="card" style="margin-top:16px"><div class="mq">${mas("")}</div><div class="mu">${Q.i+1}/${Q.q.length}</div><div class="big">${D(q.pr)} <button class="sp" onclick="say(Q.q[Q.i].sp)">🔊</button></div><div class="mu">${D(q.sub)}</div></div><div id="o">${q.typ?uiX(q):q.op.map((o,i)=>`<button class="opt" onclick="pick(${i})">${D(o)}${q.opT?`<div class="mu">${D(q.opT[i])}</div>`:""}</button>`).join("")}</div><div id="f"></div>`;if(q.auto)say(q.sp)}
 function pick(i){const q=Q.q[Q.i],bs=document.querySelectorAll(".opt"),good=q.op[i]==q.an;
 bs.forEach((b,j)=>{b.onclick=()=>say(q.opS?q.opS[j]:q.say);b.innerHTML="🔊 "+b.innerHTML;if(q.op[j]==q.an)b.classList.add("ok");else if(j==i)b.classList.add("no")});
-s.tot=(s.tot||0)+1;if(good){s.cor=(s.cor||0)+1;Q.ok++;s.xp+=10;if(!q.ng)s.known[q.k]=(s.known[q.k]||0)+1}else if(!q.ng)s.known[q.k]=Math.max(0,(s.known[q.k]||0)-1);
+done(good)}
+function done(good){const q=Q.q[Q.i];s.tot=(s.tot||0)+1;if(good){s.cor=(s.cor||0)+1;Q.ok++;s.xp+=10;if(!q.ng)s.known[q.k]=(s.known[q.k]||0)+1}else if(!q.ng)s.known[q.k]=Math.max(0,(s.known[q.k]||0)-1);
 save();say(q.say||q.sp);Q.combo=good?(Q.combo||0)+1:0;if(good){boom(Q.combo%5==0?70:22);xpUp()}react(good);document.querySelector(".bar i").style.width=((Q.i+1)/Q.q.length*100)+"%";
 $("f").innerHTML=`<p class="mu"><button class="sp" style="float:right;margin-left:8px" onclick="say(Q.q[Q.i].say)">🔊</button>${good?t(8):t(9)} ${D(q.an)}${Q.combo>=3?` <b style="color:var(--ac)">🔥 x${Q.combo}</b>`:""}<br>🌐 ${D(q.info)}</p><button class="btn" onclick="Q.i++;draw()">${t(6)}</button>`}
 if(s.nl!=null&&s.tl!=null)loadPack();
