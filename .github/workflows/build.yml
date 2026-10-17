@@ -16,12 +16,12 @@ jobs:
           distribution: temurin
           java-version: 17
       - run: npm install
-      - name: Copiar Three.js (mascota 3D)
+      - name: Preparar Three.js con cargador de modelos (mascota 3D)
         continue-on-error: true
         run: |
-          cp node_modules/three/build/three.min.js www/three.min.js
-          cp node_modules/three/examples/js/loaders/GLTFLoader.js www/GLTFLoader.js
-          cp node_modules/three/examples/js/effects/OutlineEffect.js www/OutlineEffect.js
+          npm install --no-save esbuild
+          npx esbuild src/three-bundle.js --bundle --minify --format=iife --outfile=www/three.min.js || cp node_modules/three/build/three.min.js www/three.min.js
+          ls -la www
       - name: Instalar Blender
         continue-on-error: true
         run: sudo apt-get update && (sudo apt-get install -y blender || sudo snap install blender --classic)
@@ -31,6 +31,7 @@ jobs:
           mkdir -p out
           blender -b --python blender/build_mascot.py -- out
           cp out/mascot.glb www/mascot.glb
+          ls -la out www
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -63,3 +64,4 @@ jobs:
         with:
           name: Kitty-Speakly-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
