@@ -24,7 +24,7 @@ jobs:
           ls -la www
       - name: Instalar Blender
         continue-on-error: true
-        run: sudo apt-get update && (sudo apt-get install -y blender || sudo snap install blender --classic)
+        run: sudo apt-get update && (sudo apt-get install -y blender python3-numpy || sudo snap install blender --classic)
       - name: Crear mascota 3D con Blender
         continue-on-error: true
         run: |
